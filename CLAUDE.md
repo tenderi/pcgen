@@ -11,7 +11,7 @@ contribute upstream**.
   `PCGen/pcgen`, **read-only** (fetch/pull `master` from it, nothing else).
 - All work is committed on the local branch `local`, which tracks **`fork/main`** (the fork's
   main branch holds our work). Push with `git push fork local:main` (or plain `git push`
-  with `push.default=upstream`). `fork/local` is an old copy of the branch and is no longer used.
+  with `push.default=upstream`).
 - Never push to `origin`, never open PRs or issues against `PCGen/pcgen`, and never create
   branches, releases or anything else upstream. Use `gh` only against the fork (pass
   `--repo <fork>` explicitly, since `gh` defaults to the upstream parent).
