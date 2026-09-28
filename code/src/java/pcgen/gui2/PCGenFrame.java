@@ -297,7 +297,10 @@ public final class PCGenFrame extends JFrame implements UIDelegate, CharacterSel
 
 				List<Campaign> campaigns = new ArrayList<>();
 				String[] sourceNames = sourcesNameString.split("\\|"); //$NON-NLS-1$
-				for (Campaign camp : FacadeFactory.getCampaigns())
+				// Only this game mode's sources: names aren't unique across game modes
+				// (Pathfinder 1e and 2e both have a "Core Rulebook"), and mixing them fails
+				// the whole load.
+				for (Campaign camp : FacadeFactory.getSupportedCampaigns(gameMode))
 				{
 					for (String name : sourceNames)
 					{
