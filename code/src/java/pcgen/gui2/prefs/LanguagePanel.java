@@ -155,7 +155,7 @@ public final class LanguagePanel extends PCGenPrefsPanel
 
 		for (Toggle button : languageChoiceGroup.getToggles())
 		{
-			button.setSelected(button.getUserData() == origLanguage);
+			button.setSelected(Objects.equals(button.getUserData(), origLanguage));
 		}
 
 
@@ -201,7 +201,7 @@ public final class LanguagePanel extends PCGenPrefsPanel
 
 	private void setNeedsRestart()
 	{
-		if (languageChoiceGroup.getSelectedToggle() != null && originalLanguage != languageChoiceGroup.getSelectedToggle().getUserData())
+		if (languageChoiceGroup.getSelectedToggle() != null && !Objects.equals(originalLanguage, languageChoiceGroup.getSelectedToggle().getUserData()))
 		{
 			SettingsHandler.settingsNeedRestartProperty().set(true);
 		}
