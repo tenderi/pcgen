@@ -425,7 +425,7 @@ public class SpellSupportFacadeImpl implements SpellSupportFacade, EquipmentList
 		{
 			if ((spellList.equals(current.getKeyName())))
 			{
-				JOptionPane.showMessageDialog(null, LanguageBundle.getString("in_spellbook_name_error"), //$NON-NLS-1$
+				JOptionPane.showMessageDialog(Globals.getRootFrame(), LanguageBundle.getString("in_spellbook_name_error"), //$NON-NLS-1$
 					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
 
 				return;
@@ -442,7 +442,7 @@ public class SpellSupportFacadeImpl implements SpellSupportFacade, EquipmentList
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(Globals.getRootFrame(),
 				LanguageBundle.getFormattedString("InfoPreparedSpells.add.list.fail", spellList), //$NON-NLS-1$
 				Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
 
@@ -1247,7 +1247,7 @@ public class SpellSupportFacadeImpl implements SpellSupportFacade, EquipmentList
 
 			if (outFile.exists())
 			{
-				int reallyClose = JOptionPane.showConfirmDialog(null,
+				int reallyClose = JOptionPane.showConfirmDialog(Globals.getRootFrame(),
 					LanguageBundle.getFormattedString("InfoSpells.confirm.overwrite", outFile.getName()), //$NON-NLS-1$
 					LanguageBundle.getFormattedString("InfoSpells.overwriting", //$NON-NLS-1$
 						outFile.getName()),
