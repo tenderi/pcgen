@@ -28,7 +28,8 @@ import javafx.beans.property.StringProperty;
  */
 public class NewPurchaseMethodModel
 {
-	private boolean cancelled = false;
+	// closing the window without OK (title-bar close) must count as a cancel
+	private boolean cancelled = true;
 	private final StringProperty name = new SimpleStringProperty();
 	private final IntegerProperty points = new SimpleIntegerProperty();
 

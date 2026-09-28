@@ -42,7 +42,8 @@ import javafx.scene.control.ButtonBar;
 public final class SpellChoiceDialog extends JDialog
 {
 	private final SpellChoicePanel spellChoicePanel;
-	private boolean cancelled;
+	/** Closing the window (Esc, title-bar close) without OK must count as a cancel. */
+	private boolean cancelled = true;
 
 	/**
 	 * Create a new instance of SpellChoiceDialog

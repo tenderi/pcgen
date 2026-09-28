@@ -45,7 +45,8 @@ public final class EquipCustomizerDialog extends JDialog
 {
 	private final EquipCustomPanel equipCustomPanel;
 	private boolean purchase;
-	private boolean cancelled;
+	/** Closing the window (Esc, title-bar close) without OK must count as a cancel. */
+	private boolean cancelled = true;
 
 	/**
 	 * Create a new instance of KitSelectionDialog
