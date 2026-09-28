@@ -230,6 +230,9 @@ means "bugs found", not a crash.
 Known, deliberately unfixed findings: `EquipmentChoice.addParentsExistingEquipmentModifiersToChooser`
 compares an `EquipmentModifier` to `this` (always unequal), but only for `TYPE=LASTCHOICE`, which no
 shipped data uses. `ContainsToken.unparse` null capacity list is unreachable from `parse`.
+Known data typos left alone (3.5e books, fix needs care): Unearthed Arcana "Slow" flaws
+(`ua_abilities.lst` lines 271 and 305, `BONUS:MOVEADD|TYPE.Walk|/2`; intent: halve land speed) and Arcanis
+Forged in Magic "Reanimate" (`forgedmagic_templates.lst:6`, `BONUS:MISC|CR|/2`). Those formulas are invalid.
 
 ## Troubleshooting
 
