@@ -26,7 +26,12 @@
 					<xsl:with-param name="attribute" select="'bio'"/>
 				</xsl:call-template>
 				<fo:block font-size="9pt">
-					<xsl:value-of select="$value"/>
+					<!-- An empty block has no height, which slid the next value up under this
+					     entry's title and mislabelled everything below it. -->
+					<xsl:choose>
+						<xsl:when test="normalize-space($value) = ''">&#160;</xsl:when>
+						<xsl:otherwise><xsl:value-of select="$value"/></xsl:otherwise>
+					</xsl:choose>
 				</fo:block>
 			</fo:table-cell>
 		</fo:table-row>
@@ -131,7 +136,10 @@
 								</xsl:call-template>
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'VISION'"/>
-									<xsl:with-param name="value" select="vision/all"/>	
+									<xsl:with-param name="value">
+										<xsl:value-of select="vision/all"/>
+										<xsl:if test="vision/all = ''">Normal</xsl:if>
+									</xsl:with-param>
 								</xsl:call-template>
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'ALIGNMENT'"/>
@@ -159,7 +167,11 @@
 								</xsl:call-template>
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'HAIR / HAIR STYLE'"/>
-									<xsl:with-param name="value" select="concat(hair/color, ', ', hair/length)"/>
+									<xsl:with-param name="value">
+										<xsl:value-of select="hair/color"/>
+										<xsl:if test="normalize-space(hair/color) != '' and normalize-space(hair/length) != ''">, </xsl:if>
+										<xsl:value-of select="hair/length"/>
+									</xsl:with-param>
 								</xsl:call-template>
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'PHOBIAS'"/>
@@ -168,7 +180,7 @@
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'PERSONALITY TRAITS'"/>
 									<xsl:with-param name="value">
-										<xsl:for-each select="personality/trait">
+										<xsl:for-each select="personality/trait[normalize-space(.) != '']">
 											<xsl:if test="position() &gt; 1">, </xsl:if>
 											<xsl:value-of select="."/>
 										</xsl:for-each>
@@ -180,7 +192,11 @@
 								</xsl:call-template>
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'SPOKEN STYLE / CATCH PHRASE'"/>
-									<xsl:with-param name="value" select="concat(speechtendency, ', ', catchphrase)"/>
+									<xsl:with-param name="value">
+										<xsl:value-of select="speechtendency"/>
+										<xsl:if test="normalize-space(speechtendency) != '' and normalize-space(catchphrase) != ''">, </xsl:if>
+										<xsl:value-of select="catchphrase"/>
+									</xsl:with-param>
 								</xsl:call-template>
 								<xsl:call-template name="bio.entry">
 									<xsl:with-param name="title" select="'RESIDENCE'"/>
