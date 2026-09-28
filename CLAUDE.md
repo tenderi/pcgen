@@ -178,6 +178,18 @@ harmless on Linux. Don't commit it; `git checkout gradlew.bat` restores it if it
   msrdinttest` (a few minutes in total). Run them for any change under `pcgen/cdom`, `pcgen/core` or
   the formula code.
 
+## Checking output sheets (PDF, Character Sheet tab)
+
+Export a character in batch mode against a scratch settings dir (never the real `settings/`):
+`./gradlew run -q --args="-s <scratch>/settings --character <file.pcg> --exportsheet <sheet> --outputfile <out>"`.
+The scratch dir needs `config.ini` with `settingsPath=<scratch>/settings` plus copies of the `.ini`
+files. PDF sheets are in `outputsheets/d20/fantasy/pdf/` (render with `pdftoppm`). The Character
+Sheet tab uses `preview/d20/fantasy/Standard.htm.ftl` for Pathfinder (`PREVIEWSHEET` in
+`system/gameModes/Pathfinder/miscinfo.lst`); screenshot it with
+`firefox --headless --screenshot --window-size=1000,5200`. Known, unfixed cosmetics: the legacy
+`compact.htm` / `Spellbook.htm` previews print an empty "(DC: )" (inside FOR-loop strings, hard to
+make conditional). `CLASSLIST` prints "Sorcerer3" by design ("Fighter3 Wizard2").
+
 ## Static analysis (SpotBugs)
 
 `./gradlew spotbugsMain` (SpotBugs 4.10.4, upgraded locally) only reports on `pcgen.base`,
