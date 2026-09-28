@@ -50,6 +50,7 @@ public final class PCGenUIManager
 	public static void initializeGUI()
 	{
 		DesktopHandler.initialize();
+		UIZoom.installSwingZoom();
 		pcgenFrame = new PCGenFrame(new UIContext());
 		String className = UIManager.getSystemLookAndFeelClassName();
 		try

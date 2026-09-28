@@ -95,6 +95,11 @@ public final class PCGenActionMap extends ActionMap
 	public static final String SOURCES_UNLOAD_COMMAND = SOURCES_COMMAND + ".unload";
 	public static final String INSTALL_DATA_COMMAND = SOURCES_COMMAND + ".installData";
 	//the tools menu commands
+	public static final String VIEW_COMMAND = "view";
+	public static final String ZOOM_IN_COMMAND = VIEW_COMMAND + ".zoomin";
+	public static final String ZOOM_OUT_COMMAND = VIEW_COMMAND + ".zoomout";
+	public static final String ZOOM_RESET_COMMAND = VIEW_COMMAND + ".zoomreset";
+
 	public static final String TOOLS_COMMAND = "tools";
 	public static final String PREFERENCES_COMMAND = TOOLS_COMMAND + ".preferences";
 	public static final String LOG_COMMAND = TOOLS_COMMAND + ".log";
@@ -155,6 +160,9 @@ public final class PCGenActionMap extends ActionMap
 		put(ADD_KIT_COMMAND, new AddKitAction());
 		put(EQUIPMENTSET_COMMAND, new EquipmentSetAction());
 		put(TEMP_BONUS_COMMAND, new TempBonusAction());
+		put(ZOOM_IN_COMMAND, new ZoomInAction());
+		put(ZOOM_OUT_COMMAND, new ZoomOutAction());
+		put(ZOOM_RESET_COMMAND, new ZoomResetAction());
 		put(PREFERENCES_COMMAND, new PreferencesAction());
 		put(LOG_COMMAND, new DebugAction());
 		put(LOGGING_LEVEL_COMMAND, new LoggingLevelAction());
@@ -302,6 +310,54 @@ public final class PCGenActionMap extends ActionMap
 		{
 			SolverViewFrame svf = new SolverViewFrame();
 			svf.setVisible(true);
+		}
+
+	}
+
+	private static final class ZoomInAction extends PCGenAction
+	{
+
+		private ZoomInAction()
+		{
+			super("mnuViewZoomIn", ZOOM_IN_COMMAND, "shortcut PLUS");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			UIZoom.zoomIn();
+		}
+
+	}
+
+	private static final class ZoomOutAction extends PCGenAction
+	{
+
+		private ZoomOutAction()
+		{
+			super("mnuViewZoomOut", ZOOM_OUT_COMMAND, "shortcut MINUS");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			UIZoom.zoomOut();
+		}
+
+	}
+
+	private static final class ZoomResetAction extends PCGenAction
+	{
+
+		private ZoomResetAction()
+		{
+			super("mnuViewZoomReset", ZOOM_RESET_COMMAND, "shortcut 0");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			UIZoom.resetZoom();
 		}
 
 	}

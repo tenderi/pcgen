@@ -19,6 +19,7 @@
 package pcgen.gui2;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -27,9 +28,14 @@ import java.io.File;
 import java.util.Objects;
 import java.util.logging.Level;
 
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.text.DefaultEditorKit;
 
 import pcgen.facade.core.CharacterFacade;
@@ -79,6 +85,7 @@ public final class PCGenMenuBar extends JMenuBar implements CharacterSelectionLi
 		add(new FileMenu());
 		add(createEditMenu());
 		add(createSourcesMenu());
+		add(createViewMenu());
 		add(createToolsMenu());
 		add(createHelpMenu());
 	}
@@ -124,6 +131,51 @@ public final class PCGenMenuBar extends JMenuBar implements CharacterSelectionLi
 		menu.addSeparator();
 		menu.add(actionMap.get(PCGenActionMap.INSTALL_DATA_COMMAND));
 
+		return menu;
+	}
+
+	private JMenu createViewMenu()
+	{
+		JMenu menu = new JMenu();
+		menu.setText(LanguageBundle.getString("in_mnuView"));
+		menu.setMnemonic(KeyEvent.VK_V);
+		JMenuItem zoomLevel = new JMenuItem();
+		zoomLevel.setEnabled(false);
+		menu.add(zoomLevel);
+		menu.addSeparator();
+		menu.add(new JMenuItem(actionMap.get(PCGenActionMap.ZOOM_IN_COMMAND)));
+		menu.add(new JMenuItem(actionMap.get(PCGenActionMap.ZOOM_OUT_COMMAND)));
+		menu.add(new JMenuItem(actionMap.get(PCGenActionMap.ZOOM_RESET_COMMAND)));
+		menu.addMenuListener(new MenuListener()
+		{
+			@Override
+			public void menuSelected(MenuEvent e)
+			{
+				zoomLevel.setText(LanguageBundle.getFormattedString("in_mnuViewZoomLevel", //$NON-NLS-1$
+					Math.round(UIZoom.getZoom() * 100)));
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e)
+			{
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e)
+			{
+			}
+		});
+
+		// The menu shows one accelerator per action; also accept the other keys
+		// people reach for (Ctrl+= and Ctrl+Shift+= on US layouts, the numpad).
+		InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		int ctrl = InputEvent.CTRL_DOWN_MASK;
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ctrl), PCGenActionMap.ZOOM_IN_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ctrl | InputEvent.SHIFT_DOWN_MASK),
+			PCGenActionMap.ZOOM_IN_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ctrl), PCGenActionMap.ZOOM_IN_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ctrl), PCGenActionMap.ZOOM_OUT_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, ctrl), PCGenActionMap.ZOOM_RESET_COMMAND);
 		return menu;
 	}
 

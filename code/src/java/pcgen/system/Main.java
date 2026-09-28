@@ -41,6 +41,7 @@ import pcgen.core.prereq.PrerequisiteTestFactory;
 import pcgen.facade.core.UIDelegate;
 import pcgen.gui2.PCGenUIManager;
 import pcgen.gui2.UIPropertyContext;
+import pcgen.gui2.UIZoom;
 import pcgen.gui2.converter.TokenConverter;
 import pcgen.gui3.GraphicsStartupError;
 import pcgen.gui3.PanelFromResource;
@@ -125,6 +126,12 @@ public final class Main
 		else
 		{
 			configFactory.registerAndLoadPropertyContext(ConfigurationSettings.getInstance());
+		}
+
+		if (commandLineArguments.isStartNameGenerator() || commandLineArguments.getExportSheet().isEmpty())
+		{
+			// before anything initialises AWT or JavaFX
+			UIZoom.initialize();
 		}
 
 		if (commandLineArguments.isStartNameGenerator())
