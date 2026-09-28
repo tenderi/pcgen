@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -90,13 +89,6 @@ public final class BiographyInfoPane extends JPanel implements CharacterInfoTab
 		detailsScroll.setMinimumSize(new Dimension(600, 0));
 		vbox.add(detailsScroll);
 		vbox.add(Box.createVerticalStrut(10));
-
-		Box hbox = Box.createHorizontalBox();
-		hbox.add(Box.createHorizontalGlue());
-		JButton addCustomItemButton = new JButton();
-		hbox.add(addCustomItemButton);
-		hbox.add(Box.createHorizontalGlue());
-		vbox.add(hbox);
 		vbox.add(Box.createVerticalGlue());
 
 		GridBagConstraints gbc = new GridBagConstraints();
