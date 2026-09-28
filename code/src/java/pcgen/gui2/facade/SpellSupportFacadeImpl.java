@@ -1233,7 +1233,7 @@ public class SpellSupportFacadeImpl implements SpellSupportFacade, EquipmentList
 
 		FileChooser fxExport = new FileChooser();
 		fxExport.setTitle(LanguageBundle.getString("InfoSpells.export.spells.for") + charDisplay.getDisplayName());
-		fxExport.setInitialDirectory(new File(PCGenSettings.getPcgDir()));
+		fxExport.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(PCGenSettings.getPcgDir())));
 		File file = GuiUtility.runOnJavaFXThreadNow(() -> fxExport.showSaveDialog(null));
 		if (file == null)
 		{

@@ -55,6 +55,7 @@ import pcgen.system.ConfigurationSettings;
 import pcgen.system.LanguageBundle;
 import pcgen.system.PCGenSettings;
 import pcgen.util.enumeration.Tab;
+import pcgen.gui3.GuiUtility;
 
 import javafx.stage.FileChooser;
 
@@ -234,7 +235,7 @@ public class SpellsKnownTab extends FlippingSplitPane implements CharacterInfoTa
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(LanguageBundle.getString("InfoSpells.select.output.sheet"));
-		fileChooser.setInitialDirectory(new File(ConfigurationSettings.getOutputSheetsDir()));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(ConfigurationSettings.getOutputSheetsDir())));
 		if (PCGenSettings.getSelectedSpellSheet() != null)
 		{
 			fileChooser.setInitialFileName(PCGenSettings.getSelectedSpellSheet());

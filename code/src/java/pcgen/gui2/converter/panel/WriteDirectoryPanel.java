@@ -107,7 +107,7 @@ public class WriteDirectoryPanel extends ConvertSubPanel
 		button.setMnemonic('r');
 		button.addActionListener(arg0 -> {
 			DirectoryChooser directoryChooser = new DirectoryChooser();
-			directoryChooser.setInitialDirectory(path);
+			directoryChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(path));
 
 			while (true)
 			{
@@ -130,7 +130,7 @@ public class WriteDirectoryPanel extends ConvertSubPanel
 							null,
 							"Selection must be a valid " + "(readable & writeable) Directory"
 					);
-					directoryChooser.setInitialDirectory(path.getParentFile());
+					directoryChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(path.getParentFile()));
 				}
 				else
 				{

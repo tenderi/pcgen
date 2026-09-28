@@ -36,7 +36,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import org.apache.commons.lang3.SystemUtils;
 
 /**
  * The Class {@code LocationPanel} is responsible for
@@ -237,7 +236,10 @@ public final class LocationPanel extends PCGenPrefsPanel
 			pcgenFilesDirButton.setDisable(true);
 		});
 		usersFilesDirRadio.setOnAction(evt -> {
-			pcgenFilesDir.setText(ConfigurationSettings.getUserSettingsDirFromFilePath());
+			boolean alreadyUserPath = isUserSettingsPath(
+				ConfigurationSettings.getSystemProperty(ConfigurationSettings.SETTINGS_FILES_PATH));
+			pcgenFilesDir.setText(alreadyUserPath ? ConfigurationSettings.getSettingsDir()
+				: ConfigurationSettings.getUserSettingsDirFromFilePath());
 			pcgenFilesDirButton.setDisable(true);
 		});
 		selectFilesDirRadio.setOnAction(evt -> {
@@ -279,28 +281,31 @@ public final class LocationPanel extends PCGenPrefsPanel
 		}
 		else if (usersFilesDirRadio.isSelected())
 		{
-			if (SystemUtils.IS_OS_MAC_OSX)
+			// Keep whichever per-user location is already in use (~/.pcgen, ~/.config/pcgen, ...) so an
+			// untouched radio never moves the settings; only switching to it picks the platform default,
+			// which is the path the radio button's handler showed in the text field.
+			if (!isUserSettingsPath(ConfigurationSettings.getSystemProperty(ConfigurationSettings.SETTINGS_FILES_PATH)))
 			{
 				ConfigurationSettings.setSystemProperty(ConfigurationSettings.SETTINGS_FILES_PATH,
-					SettingsFilesPath.mac_user.name());
-			}
-			else
-			{
-				ConfigurationSettings.setSystemProperty(ConfigurationSettings.SETTINGS_FILES_PATH,
-					SettingsFilesPath.user.name());
+					ConfigurationSettings.getDefaultSettingsFilesPath());
 			}
 		}
 		else
 		{
 			ConfigurationSettings.setSystemProperty(ConfigurationSettings.SETTINGS_FILES_PATH, pcgenFilesDir.getText());
 		}
-		ConfigurationSettings.setSystemProperty(ConfigurationSettings.SETTINGS_FILES_PATH, pcgenFilesDir.getText());
 		ConfigurationSettings.setSystemProperty(ConfigurationSettings.OUTPUT_SHEETS_DIR, pcgenOutputSheetDir.getText());
 		PCGenSettings.OPTIONS_CONTEXT.setBoolean(PCGenSettings.OPTION_CREATE_PCG_BACKUP,
 			pcgenCreateBackupCharacter.isSelected());
 		PCGenSettings.getInstance().setProperty(PCGenSettings.BACKUP_PCG_PATH, pcgenBackupCharacterDir.getText());
 
 		ConfigurationSettings.setSystemProperty(ConfigurationSettings.PREVIEW_DIR, pcgenPreviewDir.getText());
+	}
+
+	private static boolean isUserSettingsPath(String fType)
+	{
+		return SettingsFilesPath.user.name().equals(fType) || SettingsFilesPath.mac_user.name().equals(fType)
+			|| SettingsFilesPath.FD_USER.name().equals(fType);
 	}
 
 	@Override
@@ -417,7 +422,7 @@ public final class LocationPanel extends PCGenPrefsPanel
 	{
 		GuiAssertions.assertIsJavaFXThread();
 		DirectoryChooser directoryChooser = new DirectoryChooser();
-		directoryChooser.setInitialDirectory(currentPath);
+		directoryChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(currentPath));
 		directoryChooser.setTitle(dialogTitle);
 		File returnFile = directoryChooser.showDialog(null);
 		if (returnFile == null)

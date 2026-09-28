@@ -287,7 +287,7 @@ public final class OutputPanel extends PCGenPrefsPanel
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(LanguageBundle.getString("in_Prefs_outputSheetHTMLDefaultTitle"));
-		fileChooser.setInitialDirectory(new File(SettingsHandler.getHTMLOutputSheetPath()));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(SettingsHandler.getHTMLOutputSheetPath())));
 		fileChooser.setInitialFileName(SettingsHandler.getSelectedCharacterHTMLOutputSheet(null));
 		File newTemplate = fileChooser.showOpenDialog(null);
 
@@ -319,7 +319,7 @@ public final class OutputPanel extends PCGenPrefsPanel
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(LanguageBundle.getString("in_Prefs_outputSheetPDFDefaultTitle"));
-		fileChooser.setInitialDirectory(new File(SettingsHandler.getPDFOutputSheetPath()));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(SettingsHandler.getPDFOutputSheetPath())));
 		fileChooser.setInitialFileName(SettingsHandler.getSelectedCharacterPDFOutputSheet(null));
 		File newTemplate = fileChooser.showOpenDialog(null);
 
@@ -351,7 +351,7 @@ public final class OutputPanel extends PCGenPrefsPanel
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(LanguageBundle.getString("in_Prefs_templateEqSetTitle"));
-		fileChooser.setInitialDirectory(new File(ConfigurationSettings.getOutputSheetsDir()));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(ConfigurationSettings.getOutputSheetsDir())));
 		fileChooser.setInitialFileName(SettingsHandler.getSelectedEqSetTemplate());
 		File newTemplate = fileChooser.showOpenDialog(null);
 
@@ -375,7 +375,7 @@ public final class OutputPanel extends PCGenPrefsPanel
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(LanguageBundle.getString("in_Prefs_outputSpellSheetDefault"));
-		fileChooser.setInitialDirectory(new File(ConfigurationSettings.getOutputSheetsDir()));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(ConfigurationSettings.getOutputSheetsDir())));
 		fileChooser.setInitialFileName(PCGenSettings.getSelectedSpellSheet());
 		File newTemplate = fileChooser.showOpenDialog(null);
 

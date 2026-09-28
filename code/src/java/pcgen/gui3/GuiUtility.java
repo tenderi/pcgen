@@ -18,8 +18,12 @@
 
 package pcgen.gui3;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+
+import pcgen.system.ConfigurationSettings;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -55,5 +59,24 @@ public final class GuiUtility
 	{
 		GuiAssertions.assertIsNotJavaFXThread();
 		return CompletableFuture.supplyAsync(supplier, Platform::runLater).join();
+	}
+
+	/**
+	 * JavaFX file and directory choosers throw IllegalArgumentException, so the
+	 * button that opens them appears to do nothing, when the initial directory is
+	 * not an existing folder (a stale setting, a blank path, a folder not created
+	 * yet). Use this to sanitise every initial directory.
+	 *
+	 * @param dir the preferred initial directory, may be null or blank
+	 * @return the nearest existing directory at or above {@code dir}, or null to
+	 *         let the platform choose its default
+	 */
+	public static File existingInitialDirectory(File dir)
+	{
+		if ((dir == null) || dir.getPath().isBlank())
+		{
+			return null;
+		}
+		return ConfigurationSettings.nearestExistingDir(dir.getAbsolutePath()).map(Path::toFile).orElse(null);
 	}
 }

@@ -163,7 +163,7 @@ public class PortraitInfoPane extends JScrollPane implements CharacterInfoTab
 		public void actionPerformed(ActionEvent e)
 		{
 			FileChooser fileChooser = new FileChooser();
-			fileChooser.setInitialDirectory(new File(PCGenSettings.getPortraitsDir()));
+			fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(PCGenSettings.getPortraitsDir())));
 			fileChooser.setTitle(LanguageBundle.getString("in_loadPortrait"));
 
 			// TODO: set extension filter - list of supported images

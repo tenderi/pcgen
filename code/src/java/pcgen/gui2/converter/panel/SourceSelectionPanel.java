@@ -131,7 +131,7 @@ public class SourceSelectionPanel extends ConvertSubPanel
 		button.setMnemonic('r');
 		button.addActionListener(arg0 -> {
 			DirectoryChooser directoryChooser = new DirectoryChooser();
-			directoryChooser.setInitialDirectory(SourceFolder.OTHER.getFile());
+			directoryChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(SourceFolder.OTHER.getFile()));
 			directoryChooser.showDialog(null);
 			directoryChooser.setTitle("Please select the Source Directory to Convert");
 

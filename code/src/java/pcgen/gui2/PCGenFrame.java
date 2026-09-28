@@ -752,7 +752,7 @@ public final class PCGenFrame extends JFrame implements UIDelegate, CharacterSel
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save PCGen Party");
-		fileChooser.setInitialDirectory(new File(parentPath));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(parentPath)));
 
 		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
 				"party files only", "*.pcp"
@@ -837,7 +837,7 @@ public final class PCGenFrame extends JFrame implements UIDelegate, CharacterSel
 		File prevFile = character.getFileRef().get();
 		if (prevFile == null || StringUtils.isEmpty(prevFile.getName()))
 		{
-			fileChooser.setInitialDirectory(new File(parentPath));
+			fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(parentPath)));
 			fileChooser.setInitialFileName(character.getNameRef().get() + Constants.EXTENSION_CHARACTER_FILE);
 		}
 
@@ -929,7 +929,7 @@ public final class PCGenFrame extends JFrame implements UIDelegate, CharacterSel
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open PCGen Character");
-		fileChooser.setInitialDirectory(new File(path));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(path)));
 
 		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
 				"character files only", '*' + Constants.EXTENSION_CHARACTER_FILE
@@ -985,7 +985,7 @@ public final class PCGenFrame extends JFrame implements UIDelegate, CharacterSel
 		PropertyContext context = PCGenSettings.getInstance();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open PCGen Party File");
-		fileChooser.setInitialDirectory(new File(context.getProperty(PCGenSettings.PCP_SAVE_PATH)));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(new File(context.getProperty(PCGenSettings.PCP_SAVE_PATH))));
 
 		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
 				"party files only", "*.pcp"

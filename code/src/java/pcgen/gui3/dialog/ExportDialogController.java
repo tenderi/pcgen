@@ -126,9 +126,9 @@ public class ExportDialogController
 		FileChooser.ExtensionFilter fileFilter = ExportUtilities.getExtensionFilter(isPDF, extension);
 		fileChooser.getExtensionFilters().add(fileFilter);
 		fileChooser.setSelectedExtensionFilter(fileFilter);
-		fileChooser.setInitialDirectory(path);
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(path));
 		fileChooser.setTitle("Export " + name);
-		fileChooser.setInitialDirectory(ExportUtilities.getExportDialogBaseDir(isPDF));
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(ExportUtilities.getExportDialogBaseDir(isPDF)));
 		File outFile = fileChooser.showSaveDialog(null);
 		if (outFile == null)
 		{
@@ -246,7 +246,7 @@ public class ExportDialogController
 
 		FileChooser fileChooser = new FileChooser();
 		File baseDir = ExportUtilities.getExportDialogBaseDir(isPDF);
-		fileChooser.setInitialDirectory(baseDir);
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(baseDir));
 
 		String extension = ExportUtilities.getOutputExtension(template.toString(), isPDF);
 		FileChooser.ExtensionFilter fileFilter = ExportUtilities.getExtensionFilter(isPDF, extension);
@@ -268,7 +268,7 @@ public class ExportDialogController
 		{
 			name = character.getNameRef().get();
 		}
-		fileChooser.setInitialDirectory(path);
+		fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(path));
 		fileChooser.setTitle("Export " + name);
 		File outFile = fileChooser.showSaveDialog(null);
 		if (outFile == null)

@@ -21,11 +21,14 @@ import java.awt.Desktop;
 import java.awt.Desktop.Action;
 import java.io.File;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 
 import pcgen.gui3.GuiUtility;
 import pcgen.system.LanguageBundle;
 import pcgen.util.Logging;
+
+import org.apache.commons.lang3.SystemUtils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -68,7 +71,7 @@ public final class DesktopBrowserLauncher
 		{
 			DESKTOP.browse(uri);
 		}
-		else
+		else if (!openWithFallback(uri))
 		{
 			Dialog<ButtonType> alert = GuiUtility.runOnJavaFXThreadNow(() ->  new Alert(Alert.AlertType.WARNING));
 			Logging.debugPrint("Unable to browse to " + uri);
@@ -76,5 +79,45 @@ public final class DesktopBrowserLauncher
 			alert.setContentText(LanguageBundle.getFormattedString("in_err_browser_uri", uri));
 			GuiUtility.runOnJavaFXThreadNow(alert::showAndWait);
 		}
+	}
+
+	/**
+	 * Some Linux desktops (e.g. KDE Plasma under XWayland) report BROWSE as
+	 * unsupported even though xdg-open, and Desktop OPEN for local files, work.
+	 *
+	 * @param uri URI to display
+	 * @return true if a handler was launched
+	 */
+	private static boolean openWithFallback(URI uri)
+	{
+		if (SystemUtils.IS_OS_LINUX)
+		{
+			try
+			{
+				new ProcessBuilder("xdg-open", uri.toString()) //$NON-NLS-1$
+					.redirectOutput(Redirect.DISCARD)
+					.redirectError(Redirect.DISCARD)
+					.start();
+				return true;
+			}
+			catch (IOException e)
+			{
+				Logging.debugPrint("xdg-open failed for " + uri, e); //$NON-NLS-1$
+			}
+		}
+		if ("file".equals(uri.getScheme()) && Desktop.isDesktopSupported() //$NON-NLS-1$
+			&& DESKTOP.isSupported(Action.OPEN))
+		{
+			try
+			{
+				DESKTOP.open(new File(uri));
+				return true;
+			}
+			catch (IOException | IllegalArgumentException e)
+			{
+				Logging.debugPrint("Desktop open failed for " + uri, e); //$NON-NLS-1$
+			}
+		}
+		return false;
 	}
 }

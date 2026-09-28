@@ -193,7 +193,7 @@ public final class DataInstaller extends JFrame
             } else if (source.equals(selectButton))
             {
                 FileChooser fileChooser = new FileChooser();
-                fileChooser.setInitialDirectory(currFolder);
+                fileChooser.setInitialDirectory(GuiUtility.existingInitialDirectory(currFolder));
                 fileChooser.setTitle(LanguageBundle.getString("in_diChooserTitle"));
                 FileChooser.ExtensionFilter dataSetFilter = new FileChooser.ExtensionFilter(
                         "Data Sets", "*.pcz", "*.zip"
