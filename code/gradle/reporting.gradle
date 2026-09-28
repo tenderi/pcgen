@@ -33,7 +33,7 @@ spotbugs {
     def Confidence = Class.forName("com.github.spotbugs.snom.Confidence",
             true, plugins["com.github.spotbugs"].class.classLoader)
 
-    toolVersion = '4.9.8'
+    toolVersion = '4.10.4'
     excludeFilter = file("$rootProject.projectDir/code/standards/spotbugs_ignore.xml")
     omitVisitors = ['Naming', 'CrossSiteScripting', 'DontUseEnum', 'DoInsideDoPrivileged']
     reportLevel = Confidence.LOW
