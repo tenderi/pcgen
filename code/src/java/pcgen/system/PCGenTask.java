@@ -28,9 +28,10 @@ import pcgen.util.Logging;
 public abstract class PCGenTask implements Runnable, ProgressContainer
 {
 	private final EventListenerList listenerList = new EventListenerList();
-	private int progress = 0;
-	private int maximum = 0;
-	private String message;
+	// Written by the task's worker thread, read by UI threads (progress bars, splash).
+	private volatile int progress = 0;
+	private volatile int maximum = 0;
+	private volatile String message;
 
 	public void addPCGenTaskListener(PCGenTaskListener listener)
 	{

@@ -40,11 +40,15 @@ public class PCSkillTotalTermEvaluator extends BasePCTermEvaluator implements Te
 	public Float resolve(PlayerCharacter pc)
 	{
 		Skill aSkill = Globals.getContext().getReferenceContext().silentlyGetConstructedCDOMObject(Skill.class, total);
+		if (aSkill == null)
+		{
+			// e.g. a skill from a source that isn't loaded; getTotalRank rejects null
+			return 0.0f;
+		}
 
 		Float totalRank = SkillRankControl.getTotalRank(pc, aSkill);
 		totalRank += SkillModifier.modifier(aSkill, pc);
-
-		return (aSkill == null) ? 0.0f : totalRank;
+		return totalRank;
 	}
 
 	@Override

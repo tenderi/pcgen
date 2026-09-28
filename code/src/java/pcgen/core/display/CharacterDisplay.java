@@ -1225,16 +1225,17 @@ public class CharacterDisplay
 
 	public String getDisplayClassName(PCClass pcClass)
 	{
-		if (pcClass != null)
+		if (pcClass == null)
 		{
-			String subClassKey = getSubClassName(pcClass);
-			if ((subClassKey != null) && (!subClassKey.isEmpty()) && !subClassKey.equals(Constants.NONE))
+			return Constants.EMPTY_STRING;
+		}
+		String subClassKey = getSubClassName(pcClass);
+		if ((subClassKey != null) && (!subClassKey.isEmpty()) && !subClassKey.equals(Constants.NONE))
+		{
+			SubClass sc = pcClass.getSubClassKeyed(subClassKey);
+			if (sc != null)
 			{
-				SubClass sc = pcClass.getSubClassKeyed(subClassKey);
-				if (sc != null)
-				{
-					return sc.getDisplayName();
-				}
+				return sc.getDisplayName();
 			}
 		}
 

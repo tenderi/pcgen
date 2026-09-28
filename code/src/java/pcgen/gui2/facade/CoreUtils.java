@@ -178,16 +178,14 @@ final class CoreUtils
 
 	private static String getRequirementsInfo(PlayerCharacter pc, Object object)
 	{
-		if (object instanceof PrereqObject)
+		if (object instanceof PrereqObject prereqObject)
 		{
-			CDOMObject source = null;
-			if (object instanceof CDOMObject)
-			{
-				source = ((CDOMObject) object);
-			}
+			// Not every PrereqObject is a CDOMObject (CNAbility, QualifiedObject, ...);
+			// only CDOMObjects carry ALLOW information.
+			CDOMObject source = (object instanceof CDOMObject cdo) ? cdo : null;
             return "<html>"
-                    + PrerequisiteUtilities.preReqHTMLStringsForList(pc, source, source.getPrerequisiteList(), false)
-                    + AllowUtilities.getAllowInfo(pc, source)
+                    + PrerequisiteUtilities.preReqHTMLStringsForList(pc, source, prereqObject.getPrerequisiteList(), false)
+                    + ((source == null) ? "" : AllowUtilities.getAllowInfo(pc, source))
                     + "</html>";
 		}
 		return "";

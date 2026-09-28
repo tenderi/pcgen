@@ -169,6 +169,21 @@ harmless on Linux. Don't commit it; `git checkout gradlew.bat` restores it if it
   msrdinttest` (a few minutes in total). Run them for any change under `pcgen/cdom`, `pcgen/core` or
   the formula code.
 
+## Static analysis (SpotBugs)
+
+`./gradlew spotbugsMain` (SpotBugs 4.10.4, upgraded locally) only reports on `pcgen.base`,
+`pcgen.cdom` and `pcgen.output`. The first rule in `code/standards/spotbugs_ignore.xml` excludes all
+"older code", i.e. the GUI, core rules, I/O and plugins, so its report is nearly empty. For a real
+bug hunt, run it once with `--info`, copy the `FindBugs2` command it logs, and rerun that command
+with `-xml:withMessages=<out.xml>` and a copy of the filter without that first `<Match>`. That
+gives ~2,600 findings. Triage `CORRECTNESS` / `MT_CORRECTNESS` first; most `SECURITY` /
+`MALICIOUS_CODE` findings are noise for a desktop app. Exit code 1 from SpotBugs with `-exitcode`
+means "bugs found", not a crash.
+
+Known, deliberately unfixed findings: `EquipmentChoice.addParentsExistingEquipmentModifiersToChooser`
+compares an `EquipmentModifier` to `this` (always unequal), but only for `TYPE=LASTCHOICE`, which no
+shipped data uses. `ContainsToken.unparse` null capacity list is unreachable from `parse`.
+
 ## Troubleshooting
 
 - "PCGen requires JDK 25 to build, but Gradle could not find one" → JDK 25 not installed / not
