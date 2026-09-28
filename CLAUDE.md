@@ -201,6 +201,11 @@ The roll method / point-buy type are game-mode preferences, not read from a .pcg
 the file's PURCHASEPOINTS type). Known difference: very old files (e.g. `pf_Cleric.pcg`, 6.0x) whose
 customized items name a base item that is now a pre-built item get re-based onto `<item> (Base)` on
 save (type gains CUSTOM, value shifts slightly). Container contents may also reorder.
+`PfrpgNewCharacterRoundTripTest` builds a new character through the facade (race, alignment,
+point-buy stats, 3 Sorcerer levels, free gear), then saves, reloads and compares. Its delegate
+answers "Yes" to confirmations: the plain `ConsoleUIDelegate` answers "No", which silently cancels
+the first level-up ("Are your abilities set as you'd like them?"). It also asserts the build really
+happened, so a no-op can't pass.
 
 ## Static analysis (SpotBugs)
 
