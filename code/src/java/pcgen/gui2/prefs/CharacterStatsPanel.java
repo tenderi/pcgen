@@ -22,6 +22,8 @@ import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.RollMethod;
 import pcgen.core.GameMode;
@@ -263,47 +265,10 @@ public final class CharacterStatsPanel extends PCGenPrefsPanel
 				@Override
 				public void windowClosed(WindowEvent e)
 				{
-					Collection<PointBuyMethod> methods = SettingsHandler.getGameAsProperty().get().getModeContext()
-						.getReferenceContext().getConstructedCDOMObjects(PointBuyMethod.class);
-					final int purchaseMethodCount = methods.size();
-					pMode = new String[purchaseMethodCount];
-					pModeMethodName = new String[purchaseMethodCount];
-
-					final String methodName = SettingsHandler.getGameAsProperty().get().getPurchaseModeMethodName();
-					abilityPurchaseModeCombo.getItems().clear();
-
-					int i = 0;
-					for (PointBuyMethod pbm : methods)
-					{
-						pMode[i] = pbm.getDescription();
-						pModeMethodName[i] = pbm.getDisplayName();
-						abilityPurchaseModeCombo.getItems().add(pMode[i]);
-
-						if (pModeMethodName[i].equals(methodName))
-						{
-							abilityPurchaseModeCombo.getSelectionModel().select(i);
-						}
-						i++;
-					}
-
 					// free resources
 					pmsFrame = null;
-
-					//
-					// If user has added at least one method, then make the controls visible. Otherwise
-					// it is not a valid choice and cannot be selected, so hide it.
-					//
-					abilityPurchaseModeCombo.setVisible(purchaseMethodCount != 0);
-					abilitiesPurchasedButton.setVisible(purchaseMethodCount != 0);
-
-					//
-					// If no longer visible, but was selected, then use 'user rolled' instead
-					//
-					if (!abilitiesPurchasedButton.isVisible() && abilitiesPurchasedButton.isSelected())
-					{
-						abilitiesUserRolledButton.setSelected(true);
-					}
-
+					// the combo boxes and radio buttons below are JavaFX controls
+					Platform.runLater(CharacterStatsPanel.this::refreshPurchaseModes);
 				}
 			});
 		}
@@ -311,11 +276,56 @@ public final class CharacterStatsPanel extends PCGenPrefsPanel
 		pmsFrame.pack();
 		pmsFrame.setLocationRelativeTo(null);
 		pmsFrame.setVisible(true);
-		scoreListener = evt -> abilitiesAllSameButton.setSelected(true);
-		purchaseModeListener = evt -> abilitiesPurchasedButton.setSelected(true);
-		rolledModeListener = evt -> abilitiesRolledButton.setSelected(true);
-		startListeners();
+		Platform.runLater(() -> {
+			scoreListener = evt -> abilitiesAllSameButton.setSelected(true);
+			purchaseModeListener = evt -> abilitiesPurchasedButton.setSelected(true);
+			rolledModeListener = evt -> abilitiesRolledButton.setSelected(true);
+			startListeners();
+		});
+	}
 
+	/**
+	 * Reload the purchase methods after the configuration dialog closes.
+	 */
+	private void refreshPurchaseModes()
+	{
+		Collection<PointBuyMethod> methods = SettingsHandler.getGameAsProperty().get().getModeContext()
+			.getReferenceContext().getConstructedCDOMObjects(PointBuyMethod.class);
+		final int purchaseMethodCount = methods.size();
+		pMode = new String[purchaseMethodCount];
+		pModeMethodName = new String[purchaseMethodCount];
+
+		final String methodName = SettingsHandler.getGameAsProperty().get().getPurchaseModeMethodName();
+		abilityPurchaseModeCombo.getItems().clear();
+
+		int i = 0;
+		for (PointBuyMethod pbm : methods)
+		{
+			pMode[i] = pbm.getDescription();
+			pModeMethodName[i] = pbm.getDisplayName();
+			abilityPurchaseModeCombo.getItems().add(pMode[i]);
+
+			if (pModeMethodName[i].equals(methodName))
+			{
+				abilityPurchaseModeCombo.getSelectionModel().select(i);
+			}
+			i++;
+		}
+
+		//
+		// If user has added at least one method, then make the controls visible. Otherwise
+		// it is not a valid choice and cannot be selected, so hide it.
+		//
+		abilityPurchaseModeCombo.setVisible(purchaseMethodCount != 0);
+		abilitiesPurchasedButton.setVisible(purchaseMethodCount != 0);
+
+		//
+		// If no longer visible, but was selected, then use 'user rolled' instead
+		//
+		if (!abilitiesPurchasedButton.isVisible() && abilitiesPurchasedButton.isSelected())
+		{
+			abilitiesUserRolledButton.setSelected(true);
+		}
 	}
 
 	/**
@@ -397,6 +407,7 @@ public final class CharacterStatsPanel extends PCGenPrefsPanel
 	 */
 	private void PurchaseModeButtonPressed(ActionEvent actionEvent)
 	{
-		showPurchaseModeConfiguration();
+		// PurchaseModeFrame is a Swing dialog; this JavaFX handler must not build it on the FX thread.
+		SwingUtilities.invokeLater(this::showPurchaseModeConfiguration);
 	}
 }

@@ -44,6 +44,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.AbstractTableModel;
@@ -188,9 +189,6 @@ public final class PurchaseModeFrame extends JDialog
 		currentPurchaseMethods = new JComboBox<>();
 		purchaseMethodPointsEdit = new JTextField(4);
 		removeMethodButton = new JButton();
-
-		AbstractButton okButton = new JButton();
-		okButton.addActionListener(e -> CustomData.writePurchaseModeConfiguration());
 
 		jScrollPane1 = new JScrollPane();
 
@@ -380,19 +378,19 @@ public final class PurchaseModeFrame extends JDialog
 		bagConstraints.weightx = 1.0;
 		getContentPane().add(statusBar, bagConstraints);
 
+		// The button bar is JavaFX; its handlers run on the FX thread but drive this Swing dialog.
 		OKCloseButtonBar buttonBar = new OKCloseButtonBar(
-				evt -> okButtonActionPerformed(),
-				evt -> cancelButtonActionPerformed()
+				evt -> SwingUtilities.invokeLater(this::okButtonActionPerformed),
+				evt -> SwingUtilities.invokeLater(this::cancelButtonActionPerformed)
 		);
 
 		Button resetButton = new Button();
 		resetButton.setText(LanguageBundle.getString("in_Prefs_Reset"));
-		resetButton.setOnAction(evt -> resetButtonActionPerformed());
+		resetButton.setOnAction(evt -> SwingUtilities.invokeLater(this::resetButtonActionPerformed));
 		resetButton.setTooltip(new Tooltip(LanguageBundle.getString("in_Prefs_ResetTip")));
 		ButtonBar.setButtonData(resetButton, ButtonBar.ButtonData.BACK_PREVIOUS);
 		buttonBar.getButtons().add(resetButton);
 		buttonBar.getOkButton().setTooltip(new Tooltip(LanguageBundle.getString("in_Prefs_OKTip")));
-		okButton.addActionListener(evt -> okButtonActionPerformed());
 		buttonBar.getCancelButton().setTooltip(new Tooltip(LanguageBundle.getString("in_Prefs_CancelTip")));
 
 		/////////////////////////////////////////////////
@@ -441,6 +439,7 @@ public final class PurchaseModeFrame extends JDialog
 	private void okButtonActionPerformed()
 	{
 		purchaseModel.keepNewValues();
+		CustomData.writePurchaseModeConfiguration();
 		dispose();
 	}
 

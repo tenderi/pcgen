@@ -23,6 +23,7 @@ import java.awt.Container;
 import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import pcgen.facade.core.CharacterFacade;
@@ -76,8 +77,8 @@ public final class KitSelectionDialog extends JDialog
 
 	private void onClose(final javafx.event.ActionEvent actionEvent)
 	{
-		setVisible(true);
-		dispose();
+		// JavaFX button closing a Swing dialog
+		SwingUtilities.invokeLater(this::dispose);
 	}
 
 
