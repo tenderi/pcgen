@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -260,12 +261,16 @@ public final class PCGIOHandler extends IOHandler
         try (FileWriter fileWriter = new FileWriter(outFile, StandardCharsets.UTF_8);
              Writer bw = new BufferedWriter(fileWriter))
         {
-            pcToBeWritten.setDirty(false);
             bw.write(pcgString);
         } catch (IOException ioe)
         {
+            // Propagate: swallowing this marked the character as saved (no "unsaved
+            // changes" prompt on exit) although nothing was written, e.g. disk full or
+            // a read-only folder.
             Logging.errorPrint("Exception in PCGIOHandler::write", ioe);
+            throw new UncheckedIOException("Could not write " + outFile, ioe);
         }
+        pcToBeWritten.setDirty(false);
     }
 
     /*

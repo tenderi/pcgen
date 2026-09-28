@@ -414,10 +414,13 @@ public final class CharacterManager
 			{
 				characterFacade.save();
 			}
-			catch (final NullPointerException e)
+			catch (final RuntimeException e)
 			{
+				// e.g. UncheckedIOException from a failed write (disk full, read-only folder)
 				Logging.errorPrint("Could not save " + character.getNameRef().get(), e);
-				delegate.showErrorMessage(Constants.APPLICATION_NAME, "Could not save " + character.getNameRef().get());
+				String reason = (e.getMessage() == null) ? "" : "\n" + e.getMessage();
+				delegate.showErrorMessage(Constants.APPLICATION_NAME,
+					"Could not save " + character.getNameRef().get() + reason);
 				return false;
 			}
 		}

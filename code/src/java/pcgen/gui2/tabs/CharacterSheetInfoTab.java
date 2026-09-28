@@ -414,7 +414,7 @@ public class CharacterSheetInfoTab extends FlippingSplitPane implements Characte
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 		{
 			TempBonusFacade bonus = sortedList.getElementAt(rowIndex);
-			character.setTempBonusActive(bonus, aValue == Boolean.TRUE);
+			character.setTempBonusActive(bonus, Boolean.TRUE.equals(aValue));
 			csheet.refresh();
 		}
 

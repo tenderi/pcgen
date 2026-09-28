@@ -25,6 +25,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import pcgen.core.Campaign;
@@ -113,10 +115,11 @@ public abstract class IOHandler
 			throws FileNotFoundException, IOException
 		
 	{
+		// Back up before opening the stream: opening it truncates the file, which
+		// left nothing to back up.
+		createBackupForFile(new File(filename));
 		try (OutputStream out = new FileOutputStream(filename))
 		{
-			File outFile = new File(filename);
-			createBackupForFile(outFile);
 			write(aPC, mode, campaigns, out);
 		}
 	}
@@ -141,11 +144,17 @@ public abstract class IOHandler
 			final String BAK_PREFIX = ".bak"; //$NON-NLS-1$
 			File bakFile = new File(backupPcgPath, file + BAK_PREFIX);
 
-			if (bakFile.exists() && outFile.exists() && outFile.length() > 0)
+			// Copy rather than File.renameTo: renameTo silently fails when the backup
+			// dir is missing or on another filesystem (common on Linux), leaving no backup.
+			try
 			{
-				bakFile.delete();
+				Files.createDirectories(bakFile.toPath().toAbsolutePath().getParent());
+				Files.copy(outFile.toPath(), bakFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
-			outFile.renameTo(bakFile);
+			catch (IOException | RuntimeException e)
+			{
+				Logging.errorPrint("Could not back up " + outFile + " to " + bakFile, e); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 		}
 	}
 

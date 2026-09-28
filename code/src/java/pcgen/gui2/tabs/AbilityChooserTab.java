@@ -179,11 +179,11 @@ public class AbilityChooserTab extends FlippingSplitPane implements StateEditabl
 		@Override
 		protected void setValue(Object value)
 		{
-			if (value == Boolean.TRUE)
+			if (Boolean.TRUE.equals(value))
 			{
 				setText(LanguageBundle.getString("in_yes")); //$NON-NLS-1$
 			}
-			else if (value == Boolean.FALSE)
+			else if (Boolean.FALSE.equals(value))
 			{
 				setText(LanguageBundle.getString("in_no")); //$NON-NLS-1$
 			}

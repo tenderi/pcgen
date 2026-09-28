@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.List;
+
+import pcgen.util.Logging;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class RecursiveFileFinder
@@ -35,7 +38,15 @@ public class RecursiveFileFinder
 
 	private void _findFiles(File aDirectory, List<URI> campaignFiles)
 	{
-		for (final File file : aDirectory.listFiles(pccFileFilter))
+		File[] files = aDirectory.listFiles(pccFileFilter);
+		if (files == null)
+		{
+			// Unreadable directory (permissions, a dangling link, an unmounted drive):
+			// skip it rather than aborting the scan of every other data directory.
+			Logging.errorPrint("Could not read data directory " + aDirectory);
+			return;
+		}
+		for (final File file : files)
 		{
 			if (file.isDirectory())
 			{
