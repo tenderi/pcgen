@@ -189,6 +189,10 @@ Sheet tab uses `preview/d20/fantasy/Standard.htm.ftl` for Pathfinder (`PREVIEWSH
 `firefox --headless --screenshot --window-size=1000,5200`. Known, unfixed cosmetics: the legacy
 `compact.htm` / `Spellbook.htm` previews print an empty "(DC: )" (inside FOR-loop strings, hard to
 make conditional). `CLASSLIST` prints "Sorcerer3" by design ("Fighter3 Wizard2").
+PDF export log noise that is harmless: FOP's `SEVERE ... forcing opt to min in LengthRange` (FOP
+picks the valid value; it logs via the shared `org.apache.fop.fo.properties.PropertyMaker` logger, so
+don't silence that logger, it also carries real template errors) and `[FOP] ... exceed the available
+area in the inline-progression direction` (long text in narrow cells).
 
 ## Save/reload round trip
 

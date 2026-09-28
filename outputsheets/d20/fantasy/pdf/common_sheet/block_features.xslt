@@ -102,17 +102,6 @@
 	TEMPLATE - WORDS OF POWER
 ====================================
 ====================================-->
-	<xsl:template match="words_of_powers">
-		<xsl:if test="count(words_of_power) &gt; 0">
-			<xsl:call-template name="bold.list">
-				<xsl:with-param name="attribute" select="'class_features'" />
-				<xsl:with-param name="title" select="'Words of Power'" />
-				<xsl:with-param name="list" select="words_of_power"/>
-				<xsl:with-param name="name.tag" select="'name'"/>
-				<xsl:with-param name="desc.tag" select="'description'"/>
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:template>
 	<!--	
 ====================================
 ====================================
@@ -787,62 +776,6 @@
 	TEMPLATE - RACIAL TRAITS
 ====================================
 ====================================-->
-	<xsl:template match="racial_traits">
-	<xsl:for-each select="racial_traits">
-		<!-- BEGIN Use Per Day Ability table -->
-		<fo:table table-layout="fixed" width="100%" space-before="2mm" keep-together="always" border-collapse="collapse" >
-			<xsl:call-template name="attrib"><xsl:with-param name="attribute" select="'checklist.border'"/></xsl:call-template>
-			<fo:table-column column-width="23mm"/>
-			<fo:table-column column-width="63mm"/>
-			<fo:table-body>
-				<fo:table-row keep-with-next.within-column="always">
-											<xsl:message>Test</xsl:message>
-					<fo:table-cell padding-top="1pt" number-columns-spanned="2">
-						<xsl:call-template name="attrib">
-							<xsl:with-param name="attribute" select="'checklist'"/>
-						</xsl:call-template>
-						<fo:block font-size="10pt" font-weight="bold" text-align="center">
-							<xsl:value-of select="header"/>
-						</fo:block>
-					</fo:table-cell>
-				</fo:table-row>
-				<fo:table-row keep-with-next.within-column="always">
-											<xsl:message>Test</xsl:message>
-					<fo:table-cell padding-top="1pt" text-align="end">
-							<xsl:call-template name="attrib">
-							<xsl:with-param name="attribute" select="'checklist'"/>
-						</xsl:call-template>
-						<fo:block font-size="8pt" text-align="center"><xsl:value-of select="check_type"/></fo:block>
-					</fo:table-cell>
-					<fo:table-cell padding-top="1pt" padding-left="9pt">
-						<xsl:call-template name="attrib">
-							<xsl:with-param name="attribute" select="'checklist'"/>
-						</xsl:call-template>
-						<fo:block font-size="9pt" font-family="ZapfDingbats">
-							<xsl:call-template name="for.loop">
-								<xsl:with-param name="count" select="check_count"/>
-							</xsl:call-template>
-						</fo:block>
-					</fo:table-cell>
-				</fo:table-row>
-				<fo:table-row keep-with-next.within-column="always">
-											<xsl:message>Test END</xsl:message>
-					<fo:table-cell padding="3pt" number-columns-spanned="2">
-						<xsl:call-template name="attrib">
-							<xsl:with-param name="attribute" select="'checklist'"/>
-						</xsl:call-template>
-						<fo:block font-size="5pt" font-weight="bold">
-						<xsl:if test="name != ''"> <xsl:value-of select="name"/>:</xsl:if>
-							<fo:inline font-size="5pt" font-weight="normal"><xsl:value-of select="description"/><xsl:if test="source != ''"> [<xsl:value-of select="source"/>]</xsl:if></fo:inline>
-						</fo:block>
-					</fo:table-cell>
-				</fo:table-row>
-			</fo:table-body>
-		</fo:table>
-|%|
-		<!-- END Racial Traits table -->
-	</xsl:for-each>
-	</xsl:template>
 
 
 </xsl:stylesheet>

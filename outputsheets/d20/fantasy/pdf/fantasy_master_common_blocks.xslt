@@ -196,7 +196,7 @@
 					<xsl:attribute name="margin-left"><xsl:value-of select="$pageMarginLeft" />mm</xsl:attribute>
 					<xsl:attribute name="margin-right"><xsl:value-of select="$pageMarginRight" />mm</xsl:attribute>
 					<fo:region-body region-name="body" column-count="2" column-gap="2mm" margin-bottom="7mm"/>
-					<fo:region-after region-name="footer" extent="4.4mm"/>
+					<fo:region-after region-name="footer" extent="5mm"/><!-- 4.4mm was 1.6pt short of the two-line footer; body keeps a 7mm bottom margin -->
 				</fo:simple-page-master>
 				<fo:simple-page-master master-name="Portrait">
 					<xsl:attribute name="page-height"><xsl:value-of select="$pageHeight" />mm</xsl:attribute>
@@ -206,7 +206,7 @@
 					<xsl:attribute name="margin-left"><xsl:value-of select="$pageMarginLeft" />mm</xsl:attribute>
 					<xsl:attribute name="margin-right"><xsl:value-of select="$pageMarginRight" />mm</xsl:attribute>
 					<fo:region-body region-name="body" margin-bottom="7mm"/>
-					<fo:region-after region-name="footer" extent="4.4mm"/>
+					<fo:region-after region-name="footer" extent="5mm"/><!-- 4.4mm was 1.6pt short of the two-line footer; body keeps a 7mm bottom margin -->
 				</fo:simple-page-master>
 	
 		</fo:layout-master-set>
