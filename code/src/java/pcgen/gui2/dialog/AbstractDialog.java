@@ -22,6 +22,7 @@ import java.awt.Frame;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 import pcgen.gui3.GuiUtility;
 import pcgen.gui3.component.OKCloseButtonBar;
@@ -47,7 +48,7 @@ public abstract class AbstractDialog extends JDialog
 	{
 		OKCloseButtonBar buttonBar = new OKCloseButtonBar(
 				evt -> okButtonActionPerformed(),
-				evt -> dispose()
+				evt -> SwingUtilities.invokeLater(this::dispose)
 		);
 		buttonBar.getOkButton().setText(LanguageBundle.getString(getOkKey()));
 
@@ -81,8 +82,9 @@ public abstract class AbstractDialog extends JDialog
 	 */
 	private void okButtonActionPerformed()
 	{
+		// JavaFX handler: apply reads the JavaFX controls here, the Swing dialog closes on the EDT
 		applyButtonActionPerformed();
-		dispose();
+		SwingUtilities.invokeLater(this::dispose);
 	}
 
 	/**

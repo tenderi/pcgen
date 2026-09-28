@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import pcgen.gui2.prefs.PCGenPrefsPanel;
 import pcgen.gui2.tools.Utility;
@@ -67,16 +68,14 @@ public final class SinglePrefDialog extends JDialog
 
 	private void cancelButtonActionPerformed(final ActionEvent actionEvent)
 	{
-		setVisible(false);
-		this.dispose();
+		SwingUtilities.invokeLater(this::dispose);
 	}
 
 	private void okButtonActionPerformed(final ActionEvent actionEvent)
 	{
+		// runs on the FX thread, which the panel's JavaFX controls need; the Swing dialog closes on the EDT
 		prefsPanel.setOptionsBasedOnControls();
-		setVisible(false);
-
-		this.dispose();
+		SwingUtilities.invokeLater(this::dispose);
 	}
 
 }

@@ -22,6 +22,7 @@ import java.awt.Container;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import pcgen.facade.core.SpellBuilderFacade;
@@ -76,13 +77,13 @@ public final class SpellChoiceDialog extends JDialog
 	private void onOK(javafx.event.ActionEvent event)
 	{
 		cancelled = false;
-		dispose();
+		SwingUtilities.invokeLater(this::dispose);
 	}
 
 	private void onCancel(javafx.event.ActionEvent event)
 	{
 		cancelled = true;
-		dispose();
+		SwingUtilities.invokeLater(this::dispose);
 	}
 
 	public boolean isCancelled()

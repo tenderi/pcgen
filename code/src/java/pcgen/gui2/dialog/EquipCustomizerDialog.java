@@ -22,6 +22,7 @@ import java.awt.Container;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import pcgen.facade.core.CharacterFacade;
@@ -75,6 +76,7 @@ public final class EquipCustomizerDialog extends JDialog
 		);
 
 		Button buyButton = new Button(LanguageBundle.getString("in_buy"));
+		buyButton.setOnAction(this::doBuy);
 		buttonBar.getButtons().add(buyButton);
 
 		pane.add(GuiUtility.wrapParentAsJFXPanel(buttonBar), BorderLayout.PAGE_END);
@@ -83,23 +85,30 @@ public final class EquipCustomizerDialog extends JDialog
 
 	private void doOK(javafx.event.ActionEvent event)
 	{
-		purchase = false;
-		cancelled = false;
-		dispose();
+		close(false, false);
 	}
 
 	private void doCancel(javafx.event.ActionEvent event)
 	{
-		purchase = false;
-		cancelled = true;
-		dispose();
+		close(false, true);
 	}
 
 	private void doBuy(javafx.event.ActionEvent event)
 	{
-		purchase = true;
-		cancelled = false;
-		dispose();
+		close(true, false);
+	}
+
+	/**
+	 * The buttons are JavaFX; record the outcome and close the Swing dialog on the EDT,
+	 * where the caller reads the result once the modal dialog returns.
+	 */
+	private void close(boolean purchaseItem, boolean cancel)
+	{
+		SwingUtilities.invokeLater(() -> {
+			purchase = purchaseItem;
+			cancelled = cancel;
+			dispose();
+		});
 	}
 
 	/**

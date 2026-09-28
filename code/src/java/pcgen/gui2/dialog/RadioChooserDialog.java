@@ -29,6 +29,7 @@ import javax.swing.WindowConstants;
 import pcgen.facade.core.ChooserFacade;
 import pcgen.facade.core.InfoFacade;
 import pcgen.facade.util.ListFacade;
+import pcgen.gui3.GuiUtility;
 import pcgen.gui3.component.OKCloseButtonBar;
 import pcgen.system.LanguageBundle;
 import pcgen.util.Logging;
@@ -186,19 +187,28 @@ public class RadioChooserDialog extends JDialog
 	{
 		Toggle selectedToggle = toggleGroup.getSelectedToggle();
 		Logging.debugPrint("selected toggle is " + selectedToggle);
-		if (selectedToggle != null)
+		Integer whichItemId = (selectedToggle == null) ? null : (Integer) selectedToggle.getUserData();
+		// JavaFX button handler: the chooser and this Swing dialog belong to the EDT (see #6517).
+		SwingUtilities.invokeLater(() -> commitSelection(whichItemId));
+	}
+
+	private void commitSelection(Integer whichItemId)
+	{
+		if (whichItemId != null)
 		{
-			Integer whichItemId = (Integer)selectedToggle.getUserData();
 			InfoFacade selectedItem = chooser.getAvailableList().getElementAt(whichItemId);
 			chooser.addSelected(selectedItem);
 		}
 		if (chooser.isRequireCompleteSelection() && (chooser.getRemainingSelections().get() > 0))
 		{
-			Dialog<ButtonType> alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle(chooser.getName());
-			alert.setContentText(LanguageBundle.getFormattedString("in_chooserRequireComplete",
-					chooser.getRemainingSelections().get()));
-			alert.showAndWait();
+			String message = LanguageBundle.getFormattedString("in_chooserRequireComplete",
+					chooser.getRemainingSelections().get());
+			GuiUtility.runOnJavaFXThreadNow(() -> {
+				Dialog<ButtonType> alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle(chooser.getName());
+				alert.setContentText(message);
+				return alert.showAndWait();
+			});
 			return;
 		}
 		chooser.commit();
@@ -208,9 +218,11 @@ public class RadioChooserDialog extends JDialog
 
 	private void onCancel(final ActionEvent ignored)
 	{
-		committed = false;
-		chooser.rollback();
-		this.dispose();
+		SwingUtilities.invokeLater(() -> {
+			committed = false;
+			chooser.rollback();
+			this.dispose();
+		});
 	}
 
 	/**

@@ -43,6 +43,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -304,6 +305,12 @@ public class ChooserDialog extends JDialog implements ActionListener, ReferenceL
 
 	private void doOK(final javafx.event.ActionEvent event)
 	{
+		// JavaFX button handler: the chooser and this Swing dialog belong to the EDT (see #6517).
+		SwingUtilities.invokeLater(this::commitIfComplete);
+	}
+
+	private void commitIfComplete()
+	{
 		if (chooser.isRequireCompleteSelection() && chooser.getRemainingSelections().get() > 0)
 		{
 			JOptionPane.showMessageDialog(this,
@@ -321,9 +328,11 @@ public class ChooserDialog extends JDialog implements ActionListener, ReferenceL
 
 	private void doCancel(final javafx.event.ActionEvent event)
 	{
-		committed = false;
-		chooser.rollback();
-		dispose();
+		SwingUtilities.invokeLater(() -> {
+			committed = false;
+			chooser.rollback();
+			dispose();
+		});
 	}
 
 
