@@ -184,6 +184,10 @@ public class SummaryInfoTab extends JPanel implements CharacterInfoTab, TodoHand
 		this.addLevelsField = new JFormattedTextField(NumberFormat.getIntegerInstance());
 		this.removeLevelsField = new JFormattedTextField(NumberFormat.getIntegerInstance());
 		this.statsTable = new JTable();
+		// Commit a typed ability score when focus moves elsewhere (another tab, a button),
+		// not only on Enter/Tab; otherwise the edit was dropped and the point-buy
+		// "Points Spent" line never updated.
+		this.statsTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE); //$NON-NLS-1$
 		this.classLevelTable = new JTable();
 		this.languageTable = new JTable();
 		this.genderComboBox = new JComboBox<>();
