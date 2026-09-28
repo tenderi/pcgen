@@ -888,7 +888,7 @@ BIO
 				<num_attacks>1</num_attacks>
 				<reach>5</reach>
 				<size>M</size>
-				<special_properties>You draw a light crossbow back by pulling a lever. Loading a light crossbow is a move action that provokes attacks of opportunity.&amp;nl;Normally, operating a light crossbow requires two hands. However, you can shoot, but not load, a light crossbow with one hand at a -2 penalty on attack rolls. You can shoot a light crossbow with each hand, but you take a penalty on attack rolls as if attacking with two light weapons. This penalty is cumulative with the penalty for one-handed firing.</special_properties>
+				<special_properties>You draw a light crossbow back by pulling a lever. Loading a light crossbow is a move action that provokes attacks of opportunity. Normally, operating a light crossbow requires two hands. However, you can shoot, but not load, a light crossbow with one hand at a -2 penalty on attack rolls. You can shoot a light crossbow with each hand, but you take a penalty on attack rolls as if attacking with two light weapons. This penalty is cumulative with the penalty for one-handed firing.</special_properties>
 				<template>
 					<hit>+0</hit>
 					<damage>+0</damage>
@@ -1397,7 +1397,7 @@ BIO
 				<long>Medium</long>
 				<short>M</short>
 			</size>
-			<special_properties>You draw a light crossbow back by pulling a lever. Loading a light crossbow is a move action that provokes attacks of opportunity.&amp;nl;Normally, operating a light crossbow requires two hands. However, you can shoot, but not load, a light crossbow with one hand at a -2 penalty on attack rolls. You can shoot a light crossbow with each hand, but you take a penalty on attack rolls as if attacking with two light weapons. This penalty is cumulative with the penalty for one-handed firing.</special_properties>
+			<special_properties>You draw a light crossbow back by pulling a lever. Loading a light crossbow is a move action that provokes attacks of opportunity. Normally, operating a light crossbow requires two hands. However, you can shoot, but not load, a light crossbow with one hand at a -2 penalty on attack rolls. You can shoot a light crossbow with each hand, but you take a penalty on attack rolls as if attacking with two light weapons. This penalty is cumulative with the penalty for one-handed firing.</special_properties>
 			<type>WEAPON.RESIZABLE.RANGED.SIMPLE.CONTAINER.PROJECTILE.PIERCING.CROSSBOW.WEAPON GROUP CROSSBOWS.LIGHTCROSSBOW.WOODEN</type>
 			<weight>4</weight>
 			<bonuslist></bonuslist>
@@ -1881,7 +1881,7 @@ BIO
 					<long>Medium</long>
 					<short>M</short>
 				</size>
-				<special_properties>You draw a light crossbow back by pulling a lever. Loading a light crossbow is a move action that provokes attacks of opportunity.&amp;nl;Normally, operating a light crossbow requires two hands. However, you can shoot, but not load, a light crossbow with one hand at a -2 penalty on attack rolls. You can shoot a light crossbow with each hand, but you take a penalty on attack rolls as if attacking with two light weapons. This penalty is cumulative with the penalty for one-handed firing.</special_properties>
+				<special_properties>You draw a light crossbow back by pulling a lever. Loading a light crossbow is a move action that provokes attacks of opportunity. Normally, operating a light crossbow requires two hands. However, you can shoot, but not load, a light crossbow with one hand at a -2 penalty on attack rolls. You can shoot a light crossbow with each hand, but you take a penalty on attack rolls as if attacking with two light weapons. This penalty is cumulative with the penalty for one-handed firing.</special_properties>
 				<type>WEAPON.RESIZABLE.RANGED.SIMPLE.CONTAINER.PROJECTILE.PIERCING.CROSSBOW.WEAPON GROUP CROSSBOWS.LIGHTCROSSBOW.WOODEN</type>
 				<weight>4</weight>
 				<bonuslist></bonuslist>

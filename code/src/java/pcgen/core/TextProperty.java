@@ -75,7 +75,12 @@ public abstract class TextProperty extends PObject implements Serializable
 	 */
 	public String getParsedText(final PlayerCharacter pc, final VariableContainer varOwner, CDOMObject qualOwner)
 	{
-		return getParsedText(pc, getText(), varOwner, qualOwner);
+		// Data writes line breaks as &nl; (as in DESC, which decodes them at load time).
+		// SPROP keeps the raw text so it round-trips into custom equipment lines, so
+		// decode for display here; otherwise sheets print a literal "&nl;". Special
+		// properties are inline text (joined with ", "), and most output sheets flatten
+		// the paragraphs a real newline becomes, gluing sentences together, so use a space.
+		return getParsedText(pc, getText(), varOwner, qualOwner).replace("&nl;", " ");
 	}
 
 	protected String getParsedText(final PlayerCharacter pc, final String fullDesc, final VariableContainer varOwner,
