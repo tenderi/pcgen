@@ -9,7 +9,9 @@ contribute upstream**.
 
 - Remotes: `fork` = the personal fork (the only remote to push to); `origin` = upstream
   `PCGen/pcgen`, **read-only** (fetch/pull `master` from it, nothing else).
-- All work is committed on the `local` branch, which tracks `fork/local`. Push with `git push`.
+- All work is committed on the local branch `local`, which tracks **`fork/master`** (the fork's
+  main branch holds our work). Push with `git push fork local:master` (or plain `git push`
+  with `push.default=upstream`). `fork/local` is an old copy of the branch and is no longer used.
 - Never push to `origin`, never open PRs or issues against `PCGen/pcgen`, and never create
   branches, releases or anything else upstream. Use `gh` only against the fork (pass
   `--repo <fork>` explicitly, since `gh` defaults to the upstream parent).
@@ -79,6 +81,10 @@ detail, see `AGENTS.md` (upstream's agent doc).
   `Main.defaultConfigDir` and `Logging.readConfigurationWithLogsIn`.
 - Character saves default to the XDG documents dir (`<Documents>/PCGen/characters`).
 - `characters/` in the repo root holds sample `.pcg` files shipped with the source.
+- **Startup sources:** `settings/options.ini` has `pcgen.options.autoloadSourcesAtStart=true`
+  (Preferences → Sources), so each launch reloads `lastLoadedGame` / `lastLoadedSources`. As of
+  2026-09-28 that's the group's Pathfinder 1e list (`Pathfinder_RPG`, 17 books from their
+  character file). Loading a different set in the app replaces it on exit.
 - `pcgen.log*` in the repo root are runtime/test logs (gitignored).
 
 ## Local modifications (not upstream)
@@ -139,6 +145,9 @@ correct (pfinttest passes). Restoring the pre-#7563 walk to the object's local s
 warnings, but breaks 35e Jump speed bonuses (rsrdinttest Quasvin/JimDop/QPsiCrystal: −18, because
 `MOVE[Walk]` reads 0 at bonus time). That's true even when only objects with a local scope are
 changed. Revisit only together with that ordering problem.
+Caveat found later: those three rsrdinttest cases also fail *without* any scope change when all
+five `*inttest` suites run in one Gradle invocation, but pass when `rsrdinttest` runs alone. So
+the narrow variant may have been fine. Judge it with `./gradlew rsrdinttest` run on its own.
 
 **Threading rule these fixes follow:** a JavaFX handler (`setOnAction`, `OKCloseButtonBar`, `@FXML`)
 runs on the FX thread. Anything touching Swing components, chooser/character facades or
@@ -152,7 +161,7 @@ throw when this is violated. The exception lands in the log (`pcgen.log` / conso
 ```bash
 git checkout master && git pull --ff-only origin master   # read-only use of upstream
 git checkout local && git rebase master                   # resolve conflicts, keep both sides
-git push --force-with-lease fork local                    # rebase rewrote local; fork is personal
+git push --force-with-lease fork local:master             # rebase rewrote local; fork is personal
 ./gradlew run
 ```
 
