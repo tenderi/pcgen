@@ -27,13 +27,13 @@ detail, see `AGENTS.md` (upstream's agent doc).
 
 ## Prerequisites (Arch-based Linux)
 
-- **JDK 25 exactly.** The Gradle toolchain is pinned to language version 25 (`gradle.properties`
-  `javaVersion=25`) and there is **no toolchain auto-download** configured, so Gradle must find a
-  local JDK 25. Newer JDKs (e.g. Arch's `jdk-openjdk`) do not satisfy it.
-  - Install: `sudo pacman -S jdk25-openjdk`
-  - The system default Java can be older; Gradle's toolchain detection scans `/usr/lib/jvm`.
+- **JDK 25 exactly** for the toolchain (`gradle.properties` `javaVersion=25`); newer JDKs (Arch's
+  `jdk-openjdk`, Homebrew's `openjdk`) don't satisfy it. Gradle itself runs on any JDK ≥ 17.
+  - Locally added: the foojay toolchain resolver (`settings.gradle`) makes Gradle **download**
+    Temurin 25 into `~/.gradle/jdks` when no JDK 25 is installed. An installed one is preferred:
+    `sudo pacman -S jdk25-openjdk` (Arch) / `brew install openjdk@25` (macOS).
   - Verify: `./gradlew -q javaToolchains`
-  - If it still isn't found: `./gradlew -Porg.gradle.java.installations.paths=/usr/lib/jvm/java-25-openjdk run`
+  - If an installed JDK isn't found: `./gradlew -Porg.gradle.java.installations.paths=<jdk-25-home> run`
 - **JavaFX is not a system package** here. The build downloads the Gluon OpenJFX SDK
   (`javafxVersion` in `gradle.properties`) into `mods/` (gitignored) via `extractJavaFXLocal`.
   `run`, `compileJava` and the tests depend on it, so it happens automatically on the first build.
@@ -53,22 +53,30 @@ detail, see `AGENTS.md` (upstream's agent doc).
   UI zoom feature (below).
 - Heap for `run` is 2 GB (`maxHeapSize` in `build.gradle`); the Gradle daemon gets 4 GB.
 
-### Standalone alternatives (no Gradle at launch time)
+### Installing (no Gradle at launch time)
 
-- `./gradlew qbuild` → copies a runnable `pcgen.jar` + data into `output/` (gitignored).
-- `./gradlew installDist` → `build/install/pcgen/` with a `bin/pcgen` start script.
-- `./gradlew fullJpackage` → native app image / `.deb` under `build/jpackage` (downloads its own
-  Temurin + jmods; heavier, only worth it for a "real install").
-
-Any standalone launch still needs JDK 25 and the JavaFX modules on `--module-path` (see the `run`
-task in `code/gradle/distribution.gradle` for the exact JVM flags).
+- **Arch Linux:** `cd packaging/arch && makepkg -si` builds this checkout into `pcgen-fork` and
+  installs it: the self-contained app image (own Java 25 runtime + JavaFX, no system Java needed)
+  in `/opt/pcgen`, `/usr/bin/pcgen`, a desktop entry and an icon. `makepkg` without `-i` just builds
+  the `.pkg.tar.zst` (~150 MB). The version is `<app version>.r<commit count>.g<commit>`.
+- **macOS / other:** `./gradlew jpackageImage` → `build/jpackage/PcGen` (`PcGen.app` on macOS);
+  `./gradlew fullJpackage` → native installer (`.dmg` / `.deb` / `.exe`). Both download their own
+  Temurin + JavaFX jmods for the host platform.
+- `./gradlew qbuild` is broken upstream (its `output/pcgen.jar` expects a `libs/` folder that
+  isn't copied); don't use it.
 
 ## User data locations
 
-- `config.ini` in the repo root (working dir of `./gradlew run`, gitignored) says where settings
-  live via `settingsPath`. Choosing the "PCGen folder" option on first run puts them in
-  `<repo>/settings/` (gitignored); the Linux default is otherwise `~/.config/pcgen/`, and the
-  "user dir" option uses `~/.pcgen/`. Don't delete settings directories without asking.
+- `config.ini` says where settings live via `settingsPath`. For `./gradlew run` (working dir = repo
+  root, which is also the install root) it's in the repo root (gitignored). Choosing the "PCGen
+  folder" option on first run puts settings in `<repo>/settings/` (gitignored); the Linux default is
+  otherwise `~/.config/pcgen/`, and the "user dir" option uses `~/.pcgen/`. Don't delete settings
+  directories without asking.
+- **Packaged installs** (Arch package, `.app`, `.deb`) start with an unrelated working dir ($HOME,
+  or `/` on macOS). Locally changed so that `config.ini` goes to the per-user settings dir
+  (`~/.config/pcgen`, `~/Library/Preferences/pcgen`) and `pcgen.log` to the per-user log dir
+  (`~/.local/state/pcgen`, `~/Library/Logs/PCGen`) instead of the working dir. See
+  `Main.defaultConfigDir` and `Logging.readConfigurationWithLogsIn`.
 - Character saves default to the XDG documents dir (`<Documents>/PCGen/characters`).
 - `characters/` in the repo root holds sample `.pcg` files shipped with the source.
 - `pcgen.log*` in the repo root are runtime/test logs (gitignored).
@@ -90,6 +98,14 @@ everything at 1×. `code/src/java/pcgen/gui2/UIZoom.java` fixes this:
   `PCGenMenuBar.createViewMenu`, and the `in_mnuView*` keys in `LanguageBundle.properties`.
   The test is `code/src/test/pcgen/gui2/UIZoomTest.java`.
 - If an upstream pull conflicts in these files, keep both sides. The hooks are one-liners.
+- Extra zoom keys use `Toolkit.getMenuShortcutKeyMaskEx()` (Cmd on macOS). Fonts are only
+  overridden once the zoom differs from 100%, so native look-and-feel fonts (Aqua) stay intact.
+
+**macOS:** `Main.configureMacDesktop` sets `apple.laf.useScreenMenuBar` and
+`apple.awt.application.name` before AWT starts, so the menus live in the macOS menu bar.
+`PCGenUIManager.initializeGUI` now installs the system look and feel *before* building the main
+window. Upstream set it afterwards, so the main window stayed Metal (no Aqua/GTK). These are
+untested on real macOS hardware here; verify on a Mac when possible.
 
 **Linux bug fixes:**
 - `DesktopBrowserLauncher`: under KDE/XWayland, Java reports `Desktop.Action.BROWSE` as unsupported,

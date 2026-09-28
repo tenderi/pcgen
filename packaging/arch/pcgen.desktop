@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=PCGen
+GenericName=RPG Character Generator
+Comment=Create and manage tabletop RPG characters
+Exec=pcgen
+Icon=pcgen
+Terminal=false
+Categories=Game;RolePlaying;
+Keywords=RPG;D&D;Pathfinder;character;
+# Swing names its X11 window class after the main class; lets the taskbar match the window.
+StartupWMClass=pcgen-system-Main

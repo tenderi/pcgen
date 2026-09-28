@@ -1,0 +1,52 @@
+# Arch Linux package for this PCGen fork, built from the surrounding git checkout.
+#
+#   cd packaging/arch && makepkg -si
+#
+# Installs the self-contained jpackage app image (PCGen + its own Java 25 runtime
+# with JavaFX) to /opt/pcgen, a `pcgen` command, a desktop entry and an icon.
+# No system Java is needed at runtime. Building needs a JDK >= 17 to run Gradle;
+# the JDK 25 toolchain and the Temurin/JavaFX bits for the bundled runtime are
+# downloaded by the build if missing.
+#
+# Per-user data of the installed app: settings in ~/.config/pcgen, log in
+# ~/.local/state/pcgen/pcgen.log, characters in <Documents>/PCGen/characters.
+
+pkgname=pcgen-fork
+# The checkout this PKGBUILD lives in (packaging/arch -> repo root).
+_repo="$(realpath "$startdir/../..")"
+_appver=$(sed -n 's/^version=//p' "$_repo/gradle.properties")
+# <app version>.r<commit count>.g<commit>, computed here rather than in pkgver() so makepkg
+# doesn't rewrite this file on every build.
+pkgver="${_appver//-/_}.r$(git -C "$_repo" rev-list --count HEAD).g$(git -C "$_repo" rev-parse --short HEAD)"
+pkgrel=1
+pkgdesc="RPG character generator (D&D 3.5, Pathfinder, Starfinder, ...), personal fork with Linux/macOS fixes"
+arch=('x86_64' 'aarch64')
+url="https://github.com/tenderi/pcgen"
+license=('LGPL-2.1-or-later')
+# Native libraries the bundled Java runtime and JavaFX load from the system.
+depends=('gtk3' 'libxtst' 'libxi' 'libxrender' 'alsa-lib' 'fontconfig' 'hicolor-icon-theme')
+makedepends=('java-environment>=17')
+provides=('pcgen')
+conflicts=('pcgen' 'pcgen-bin')
+# The bundled JDK and JavaFX libraries must not be stripped or debug-split.
+options=('!strip' '!debug')
+source=('pcgen.desktop')
+sha256sums=('0931394dac64d64d26c2586553dbdb5880bf363c118d6ae6fa13669da364d5be')
+
+build() {
+  cd "$_repo"
+  ./gradlew --no-daemon jpackageImage
+}
+
+package() {
+  install -d "$pkgdir/opt/pcgen"
+  cp -a "$_repo/build/jpackage/PcGen/." "$pkgdir/opt/pcgen/"
+
+  install -d "$pkgdir/usr/bin"
+  ln -s /opt/pcgen/bin/PcGen "$pkgdir/usr/bin/pcgen"
+
+  install -Dm644 "$srcdir/pcgen.desktop" "$pkgdir/usr/share/applications/pcgen.desktop"
+  install -Dm644 "$_repo/system/icons/pcgen_128x128.png" \
+    "$pkgdir/usr/share/icons/hicolor/128x128/apps/pcgen.png"
+  install -Dm644 "$_repo/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
