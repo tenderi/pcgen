@@ -132,6 +132,7 @@ public final class Main
 		{
 			// before anything initialises AWT or JavaFX
 			UIZoom.initialize();
+			configureMacDesktop();
 		}
 
 		if (commandLineArguments.isStartNameGenerator())
@@ -148,6 +149,27 @@ public final class Main
 		else
 		{
 			shutdown(startupWithoutGUI());
+		}
+	}
+
+	/**
+	 * On macOS, put the Swing menus in the system menu bar and name the app there, as
+	 * macOS users expect. Only read before AWT initialises, and a value given on the
+	 * command line (-D) wins.
+	 */
+	private static void configureMacDesktop()
+	{
+		if (!SystemUtils.IS_OS_MAC)
+		{
+			return;
+		}
+		if (System.getProperty("apple.laf.useScreenMenuBar") == null) //$NON-NLS-1$
+		{
+			System.setProperty("apple.laf.useScreenMenuBar", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (System.getProperty("apple.awt.application.name") == null) //$NON-NLS-1$
+		{
+			System.setProperty("apple.awt.application.name", Constants.APPLICATION_NAME); //$NON-NLS-1$
 		}
 	}
 

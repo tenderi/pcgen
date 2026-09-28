@@ -50,8 +50,9 @@ public final class PCGenUIManager
 	public static void initializeGUI()
 	{
 		DesktopHandler.initialize();
-		UIZoom.installSwingZoom();
-		pcgenFrame = new PCGenFrame(new UIContext());
+		// Install the system look and feel before building the main window, so the window
+		// uses it too (Aqua on macOS, GTK on GNOME) instead of the Metal default; zoom then
+		// scales that look and feel's fonts.
 		String className = UIManager.getSystemLookAndFeelClassName();
 		try
 		{
@@ -60,7 +61,8 @@ public final class PCGenUIManager
 		{
 			Logging.errorPrint("system look and feel not found", e);
 		}
-
+		UIZoom.installSwingZoom();
+		pcgenFrame = new PCGenFrame(new UIContext());
 	}
 
 	public static void startGUI()

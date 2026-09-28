@@ -201,6 +201,12 @@ public final class UIZoom
 	{
 		if (baseFonts == null)
 		{
+			if (fontFactor() == 1.0)
+			{
+				// Nothing to scale yet; leave the look and feel's own fonts untouched
+				// (e.g. native Aqua fonts on macOS at the default zoom).
+				return;
+			}
 			baseFonts = new HashMap<>();
 			UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 			for (Object key : Collections.list(defaults.keys()))

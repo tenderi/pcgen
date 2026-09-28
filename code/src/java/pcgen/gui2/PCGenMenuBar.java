@@ -18,6 +18,7 @@
  */
 package pcgen.gui2;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
@@ -167,15 +168,16 @@ public final class PCGenMenuBar extends JMenuBar implements CharacterSelectionLi
 		});
 
 		// The menu shows one accelerator per action; also accept the other keys
-		// people reach for (Ctrl+= and Ctrl+Shift+= on US layouts, the numpad).
+		// people reach for (Ctrl/Cmd+= and +Shift+= on US layouts, the numpad).
+		// Use the platform shortcut modifier like the menu accelerators: Cmd on macOS, Ctrl elsewhere.
 		InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		int ctrl = InputEvent.CTRL_DOWN_MASK;
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ctrl), PCGenActionMap.ZOOM_IN_COMMAND);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ctrl | InputEvent.SHIFT_DOWN_MASK),
+		int shortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, shortcut), PCGenActionMap.ZOOM_IN_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, shortcut | InputEvent.SHIFT_DOWN_MASK),
 			PCGenActionMap.ZOOM_IN_COMMAND);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ctrl), PCGenActionMap.ZOOM_IN_COMMAND);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ctrl), PCGenActionMap.ZOOM_OUT_COMMAND);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, ctrl), PCGenActionMap.ZOOM_RESET_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, shortcut), PCGenActionMap.ZOOM_IN_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, shortcut), PCGenActionMap.ZOOM_OUT_COMMAND);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, shortcut), PCGenActionMap.ZOOM_RESET_COMMAND);
 		return menu;
 	}
 
