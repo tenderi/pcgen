@@ -150,7 +150,9 @@
  <tr bgcolor="#DDDDDD">
   <td class="sptab"><b>PER DAY</b></td>
 <@loop from=0 to=pcvar('MAXSPELLLEVEL.${class}') ; level , level_has_next><#-- TODO: Loop was of early exit type 1 -->
-  <td class="sptab"><b>${pcstring('SPELLLISTCAST.${class}.${level}')}</b></td>
+  <#assign perDay = pcstring('SPELLLISTCAST.${class}.${level}')>
+  <#-- as the PDF sheets: 0 casts at level 0 with spells known means cantrips/orisons at will -->
+  <td class="sptab"><b><#if perDay != "0">${perDay}<#elseif level == 0 && pcstring('SPELLLISTKNOWN.${class}.${level}') != "0">at will<#else>&#x2014;</#if></b></td>
 </@loop>
  </tr>
 </table>
@@ -220,7 +222,7 @@
   <@loop from=1 to=pcvar("SPELLMEM.${class}.${spellbook}.${level}.${spell}.TIMES")>&#9744;</@loop></font><#lt>
      </td>
 </#if>
-     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b> (DC:${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')})</td>
+     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b><#assign spellDc = pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')><#if spellDc?has_content> (DC:${spellDc})</#if></td>
     </tr>
 </@loop>
    </table>
@@ -256,7 +258,7 @@
     <@loop from=1 to=pcvar("SPELLMEM.${class}.${spellbook}.${level}.${spell}.TIMES") ; slot_num , slot_num_has_next><input target_var="${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}_${slot_num}" type="checkbox"/></@loop></font>
      </td>
    </#if>
-     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b> (DC:${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')})</td>
+     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b><#assign spellDc = pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')><#if spellDc?has_content> (DC:${spellDc})</#if></td>
     </tr>
   </@loop>
    </table>
@@ -309,7 +311,7 @@
      <td align="right"><font style="font-size: medium">
 	  <@loop from=1 to=pcvar("SPELLMEM.${class}.${spellbook}.${level}.${spell}.TIMES") ; spell_slot , spell_slot_has_next><input target_var="${pcstring('SPELLBOOKNAME.${spellbook}')}_${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}+${spell_slot}" type="checkbox"/></@loop></font>
      </td>
-     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.BONUSSPELL')}${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b> (DC:${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')})</td>
+     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.BONUSSPELL')}${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b><#assign spellDc = pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')><#if spellDc?has_content> (DC:${spellDc})</#if></td>
     </tr>
 </@loop>
    </table>
@@ -333,7 +335,7 @@
      <td align="right"><font style="font-size: medium">
 <@loop from=1 to=pcvar("SPELLMEM.${class}.${spellbook}.${level}.${spell}.TIMES")>&#9744;</@loop></font>
      </td>
-     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.BONUSSPELL')}${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b> (DC:${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')})</td>
+     <td class="font9"><b>${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.BONUSSPELL')}${pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.NAME')}</b><#assign spellDc = pcstring('SPELLMEM.${class}.${spellbook}.${level}.${spell}.DC')><#if spellDc?has_content> (DC:${spellDc})</#if></td>
     </tr>
 </@loop>
    </table>
