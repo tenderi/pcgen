@@ -190,6 +190,18 @@ Sheet tab uses `preview/d20/fantasy/Standard.htm.ftl` for Pathfinder (`PREVIEWSH
 `compact.htm` / `Spellbook.htm` previews print an empty "(DC: )" (inside FOR-loop strings, hard to
 make conditional). `CLASSLIST` prints "Sorcerer3" by design ("Fighter3 Wizard2").
 
+## Save/reload round trip
+
+`PfrpgSaveRoundTripTest` (runs with `pfinttest`) loads a Pathfinder character, exports it, saves it
+with the app's save path, reloads the saved file, exports again, and requires identical output.
+Point it at another file and keep the re-saved copy through the forked test JVM's environment
+(Gradle doesn't forward `-D`):
+`JAVA_TOOL_OPTIONS="-Droundtrip.pcg=<file.pcg> -Droundtrip.keep=<dir>" ./gradlew pfinttest --tests '*SaveRoundTrip*'`.
+The roll method / point-buy type are game-mode preferences, not read from a .pcg (the test applies
+the file's PURCHASEPOINTS type). Known difference: very old files (e.g. `pf_Cleric.pcg`, 6.0x) whose
+customized items name a base item that is now a pre-built item get re-based onto `<item> (Base)` on
+save (type gains CUSTOM, value shifts slightly). Container contents may also reorder.
+
 ## Static analysis (SpotBugs)
 
 `./gradlew spotbugsMain` (SpotBugs 4.10.4, upgraded locally) only reports on `pcgen.base`,
