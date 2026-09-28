@@ -62,6 +62,15 @@ public final class GuiUtility
 	}
 
 	/**
+	 * Like {@link #runOnJavaFXThreadNow(Supplier)} but callable from any thread,
+	 * including the JavaFX thread itself (where it just runs the supplier).
+	 */
+	public static <T> T runOnJavaFXThreadAndWait(Supplier<T> supplier)
+	{
+		return Platform.isFxApplicationThread() ? supplier.get() : runOnJavaFXThreadNow(supplier);
+	}
+
+	/**
 	 * JavaFX file and directory choosers throw IllegalArgumentException, so the
 	 * button that opens them appears to do nothing, when the initial directory is
 	 * not an existing folder (a stale setting, a blank path, a folder not created

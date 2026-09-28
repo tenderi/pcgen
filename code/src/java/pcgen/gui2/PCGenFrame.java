@@ -1442,44 +1442,45 @@ public final class PCGenFrame extends JFrame implements UIDelegate, CharacterSel
 		return ret == JOptionPane.YES_OPTION;
 	}
 
+	// The message methods are reached via ShowMessageDelegate from Swing, worker and JavaFX
+	// threads alike, so they must work from any of them.
 	@Override
 	public void showErrorMessage(String title, String message)
 	{
-		GuiAssertions.assertIsNotJavaFXThread();
-		Alert alert = GuiUtility.runOnJavaFXThreadNow(() -> new Alert(Alert.AlertType.ERROR));
-		alert.setTitle(title);
-		alert.setContentText(message);
-		GuiUtility.runOnJavaFXThreadNow(alert::showAndWait);
+		showAlert(Alert.AlertType.ERROR, title, message);
 	}
 
 	@Override
 	public void showInfoMessage(String title, String message)
 	{
-		GuiAssertions.assertIsNotJavaFXThread();
-		Alert alert = GuiUtility.runOnJavaFXThreadNow(() -> new Alert(Alert.AlertType.INFORMATION));
-		alert.setTitle(title);
-		alert.setContentText(message);
-		GuiUtility.runOnJavaFXThreadNow(alert::showAndWait);
+		showAlert(Alert.AlertType.INFORMATION, title, message);
 	}
 
 	@Override
 	public void showWarningMessage(String title, String message)
 	{
-		GuiAssertions.assertIsNotJavaFXThread();
-		Alert alert = GuiUtility.runOnJavaFXThreadNow(() -> new Alert(Alert.AlertType.WARNING));
-		alert.setTitle(title);
-		alert.setContentText(message);
-		GuiUtility.runOnJavaFXThreadNow(alert::showAndWait);
+		showAlert(Alert.AlertType.WARNING, title, message);
+	}
+
+	private static void showAlert(Alert.AlertType type, String title, String message)
+	{
+		GuiUtility.runOnJavaFXThreadAndWait(() -> {
+			Alert alert = new Alert(type);
+			alert.setTitle(title);
+			alert.setContentText(message);
+			return alert.showAndWait();
+		});
 	}
 
 	@Override
 	public Optional<String> showInputDialog(String title, String message, String initialValue)
 	{
-		GuiAssertions.assertIsNotJavaFXThread();
-		TextInputDialog dialog = GuiUtility.runOnJavaFXThreadNow(() -> new TextInputDialog(initialValue));
-		dialog.setTitle(title);
-		dialog.setContentText(message);
-		return GuiUtility.runOnJavaFXThreadNow(dialog::showAndWait);
+		return GuiUtility.runOnJavaFXThreadAndWait(() -> {
+			TextInputDialog dialog = new TextInputDialog(initialValue);
+			dialog.setTitle(title);
+			dialog.setContentText(message);
+			return dialog.showAndWait();
+		});
 	}
 
 	@Override

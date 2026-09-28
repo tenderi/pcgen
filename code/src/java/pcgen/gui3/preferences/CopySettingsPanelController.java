@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.swing.SwingUtilities;
+
 import pcgen.cdom.base.Constants;
 import pcgen.core.GameMode;
 import pcgen.core.SettingsHandler;
@@ -68,11 +70,10 @@ public final class CopySettingsPanelController implements ResettableController
 	{
 		SettingsHandler.getGameAsProperty().addListener((observable, oldValue, newValue) -> {
 			GuiAssertions.assertIsNotJavaFXThread();
-			Platform.runLater(() -> copyButtonLabel.setText(LanguageBundle.getFormattedString(
-                    "in_Prefs_copyTo",
-                    newValue.getName()
-            )));
+			Platform.runLater(() -> updateCopyButtonLabel(newValue));
 		});
+		// the listener only fires on a later change; show the current game mode now
+		updateCopyButtonLabel(SettingsHandler.getGameAsProperty().get());
 
 		GameMode[] unmodifiableGameModeList = SystemCollections.getUnmodifiableGameModeList().toArray(new GameMode[0]);
 		gameModeItems = FXCollections.observableArrayList(unmodifiableGameModeList);
@@ -105,12 +106,20 @@ public final class CopySettingsPanelController implements ResettableController
 				.getPCGenOption("InfoCharacterSheet." + gmFrom.getName() + ".CurrentSheet", currentICS);
 		SettingsHandler.setPCGenOption("InfoCharacterSheet." + gmTo.getName() + ".CurrentSheet", fromGmICS);
 
-		GuiAssertions.assertIsNotJavaFXThread();
-		affectedPanels.forEach(PCGenPrefsPanel::applyOptionValuesToControls);
+		// This is a JavaFX handler; the affected panels are Swing panels whose refresh must not run here.
+		SwingUtilities.invokeLater(() -> {
+			affectedPanels.forEach(PCGenPrefsPanel::applyOptionValuesToControls);
 
-		// Let the user know it is done
-		ShowMessageDelegate.showMessageDialog(LanguageBundle.getString("in_Prefs_copyDone"),
-				Constants.APPLICATION_NAME, MessageType.INFORMATION);
+			// Let the user know it is done
+			ShowMessageDelegate.showMessageDialog(LanguageBundle.getString("in_Prefs_copyDone"),
+					Constants.APPLICATION_NAME, MessageType.INFORMATION);
+		});
+	}
+
+	private void updateCopyButtonLabel(GameMode gameMode)
+	{
+		copyButtonLabel.setText(gameMode == null ? ""
+				: LanguageBundle.getFormattedString("in_Prefs_copyTo", gameMode.getName()));
 	}
 
 	/**

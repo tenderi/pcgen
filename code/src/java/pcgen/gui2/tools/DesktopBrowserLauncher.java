@@ -73,11 +73,14 @@ public final class DesktopBrowserLauncher
 		}
 		else if (!openWithFallback(uri))
 		{
-			Dialog<ButtonType> alert = GuiUtility.runOnJavaFXThreadNow(() ->  new Alert(Alert.AlertType.WARNING));
 			Logging.debugPrint("Unable to browse to " + uri);
-			alert.setTitle(LanguageBundle.getString("in_err_browser_err"));
-			alert.setContentText(LanguageBundle.getFormattedString("in_err_browser_uri", uri));
-			GuiUtility.runOnJavaFXThreadNow(alert::showAndWait);
+			// callers include JavaFX handlers (About dialog) as well as Swing ones
+			GuiUtility.runOnJavaFXThreadAndWait(() -> {
+				Dialog<ButtonType> alert = new Alert(Alert.AlertType.WARNING);
+				alert.setTitle(LanguageBundle.getString("in_err_browser_err"));
+				alert.setContentText(LanguageBundle.getFormattedString("in_err_browser_uri", uri));
+				return alert.showAndWait();
+			});
 		}
 	}
 
