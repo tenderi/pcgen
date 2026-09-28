@@ -185,10 +185,36 @@ public final class Main
 			}
 		}
 		// Otherwise return command line argument for the settings directory
-		// Otherwise return user dir
+		// Otherwise pick between the working dir and the per-user settings dir
 		return commandLineArguments.getSettingsDir()
 				.map(File::getPath)
-				.orElse(SystemUtils.USER_DIR);
+				.orElseGet(() -> defaultConfigDir(Path.of(SystemUtils.USER_DIR),
+					ConfigurationSettings.installRootPath(),
+					commandLineArguments.getConfigFileName().orElse("config.ini"), //$NON-NLS-1$
+					ConfigurationSettings.getUserSettingsDirFromFilePath()));
+	}
+
+	/**
+	 * Where config.ini lives when neither -Dpcgen.config nor --settingsdir says.
+	 * <p>
+	 * Running from PCGen's own folder (a source checkout via ./gradlew run, an unpacked
+	 * zip) keeps using the working directory, as does any directory that already holds
+	 * the config file, so existing setups are unaffected. A packaged app started from a
+	 * desktop menu or the Finder has an unrelated working directory ($HOME, or / on
+	 * macOS, where the file can't even be written, so every setting in it was lost);
+	 * there, use the platform's per-user settings dir (~/.config/pcgen,
+	 * ~/Library/Preferences/pcgen, ~/.pcgen), which PCGen already uses for its other
+	 * settings files.
+	 */
+	static String defaultConfigDir(Path userDir, Path installRoot, String configFileName, String userSettingsDir)
+	{
+		boolean runningFromInstallDir = userDir.toAbsolutePath().normalize()
+			.equals(installRoot.toAbsolutePath().normalize());
+		if (runningFromInstallDir || Files.exists(userDir.resolve(configFileName)))
+		{
+			return userDir.toString();
+		}
+		return userSettingsDir;
 	}
 
 	/**

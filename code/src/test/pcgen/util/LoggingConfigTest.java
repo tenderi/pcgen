@@ -14,12 +14,14 @@
 package pcgen.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -95,5 +97,45 @@ class LoggingConfigTest
 	void returnsEmptyWhenNothingIsFound(@TempDir Path empty)
 	{
 		assertTrue(Logging.findLoggingConfig(empty.toString(), empty.toString()).isEmpty());
+	}
+
+	/**
+	 * A packaged launch's working directory is unrelated ($HOME, or an unwritable /
+	 * on macOS), so relative log files move to the per-user log directory.
+	 */
+	@Test
+	void relocatesRelativeLogFilePatterns(@TempDir Path logDir)
+	{
+		Properties props = new Properties();
+		props.setProperty("pcgen.system.LoggingRecorder.pattern", "pcgen.log");
+		props.setProperty("java.util.logging.FileHandler.pattern", "%h/java%u.log");
+		props.setProperty("other.pattern", logDir.resolve("abs.log").toString());
+		props.setProperty("pcgen.level", "LSTWARN");
+
+		assertTrue(Logging.relocateRelativeLogFiles(props, logDir));
+		assertEquals(logDir.resolve("pcgen.log").toString(), props.getProperty("pcgen.system.LoggingRecorder.pattern"));
+		assertEquals("%h/java%u.log", props.getProperty("java.util.logging.FileHandler.pattern"));
+		assertEquals(logDir.resolve("abs.log").toString(), props.getProperty("other.pattern"));
+		assertEquals("LSTWARN", props.getProperty("pcgen.level"));
+	}
+
+	@Test
+	void escapesPercentInRelocatedLogDir(@TempDir Path base)
+	{
+		Properties props = new Properties();
+		props.setProperty("pcgen.system.LoggingRecorder.pattern", "pcgen.log");
+
+		Logging.relocateRelativeLogFiles(props, base.resolve("100%"));
+		assertEquals(base.resolve("100%%").resolve("pcgen.log").toString(),
+			props.getProperty("pcgen.system.LoggingRecorder.pattern"));
+	}
+
+	@Test
+	void leavesConfigWithoutRelativePatternsAlone(@TempDir Path logDir)
+	{
+		Properties props = new Properties();
+		props.setProperty(".level", "SEVERE");
+
+		assertFalse(Logging.relocateRelativeLogFiles(props, logDir));
 	}
 }

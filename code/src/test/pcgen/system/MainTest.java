@@ -84,4 +84,26 @@ class MainTest
 		assertEquals(1, exitCalls.get(), "Shutdown must exit exactly once despite failing cleanup steps");
 		assertEquals(expectedStatus, observedStatus.get(), "Exit status must reflect the success flag");
 	}
+
+	@Test
+	void configStaysInWorkingDirWhenRunFromInstallDir(@TempDir Path install)
+	{
+		assertEquals(install.toString(),
+			Main.defaultConfigDir(install, install, "config.ini", "/home/u/.config/pcgen"));
+	}
+
+	@Test
+	void configStaysInWorkingDirThatAlreadyHasIt(@TempDir Path cwd, @TempDir Path install) throws Exception
+	{
+		Files.createFile(cwd.resolve("config.ini"));
+		assertEquals(cwd.toString(), Main.defaultConfigDir(cwd, install, "config.ini", "/home/u/.config/pcgen"));
+	}
+
+	@Test
+	void packagedLaunchElsewhereUsesUserSettingsDir(@TempDir Path install)
+	{
+		// e.g. a Finder launch (working dir /) or a desktop-menu launch (working dir $HOME)
+		assertEquals("/home/u/.config/pcgen",
+			Main.defaultConfigDir(Path.of("/"), install, "config.ini", "/home/u/.config/pcgen"));
+	}
 }

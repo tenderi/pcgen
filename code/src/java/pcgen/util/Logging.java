@@ -17,8 +17,10 @@
  */
 package pcgen.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -104,16 +107,29 @@ public final class Logging
 	static
 	{
 		// Set a default configuration file if none was specified.
+		Optional<Path> foundConfig = Optional.empty();
 		if (System.getProperty(CONFIG_FILE_PROPERTY) == null)
 		{
-			findLoggingConfig(SystemUtils.USER_DIR, SystemUtils.JAVA_HOME)
-					.ifPresent(p -> System.setProperty(CONFIG_FILE_PROPERTY, p.toAbsolutePath().toString()));
+			foundConfig = findLoggingConfig(SystemUtils.USER_DIR, SystemUtils.JAVA_HOME);
+			foundConfig.ifPresent(p -> System.setProperty(CONFIG_FILE_PROPERTY, p.toAbsolutePath().toString()));
 		}
 
 		// Get Java Logging to read in the config.
 		try
 		{
-			LogManager.getLogManager().readConfiguration();
+			Path workingDir = Path.of(SystemUtils.USER_DIR).toAbsolutePath();
+			Optional<Path> installConfig = foundConfig.map(Path::toAbsolutePath)
+					.filter(p -> !workingDir.equals(p.getParent()));
+			if (installConfig.isPresent())
+			{
+				// A packaged launch (desktop menu, Finder) runs with an unrelated working dir:
+				// $HOME, or / on macOS where a relative log file can't even be created.
+				readConfigurationWithLogsIn(installConfig.get(), userLogDir());
+			}
+			else
+			{
+				LogManager.getLogManager().readConfiguration();
+			}
 		}
 		catch (SecurityException | IOException e)
 		{
@@ -137,6 +153,70 @@ public final class Logging
 				.map(dir -> dir.resolve(LOGGING_PROPERTIES))
 				.filter(Files::isRegularFile)
 				.findFirst();
+	}
+
+	/**
+	 * Reads the logging configuration with relative log file patterns (e.g.
+	 * {@code pcgen.log}) resolved against {@code logDir} rather than the working
+	 * directory.
+	 */
+	private static void readConfigurationWithLogsIn(Path configFile, Path logDir) throws IOException
+	{
+		Properties props = new Properties();
+		try (InputStream in = Files.newInputStream(configFile))
+		{
+			props.load(in);
+		}
+		if (relocateRelativeLogFiles(props, logDir))
+		{
+			Files.createDirectories(logDir);
+		}
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		props.store(out, null);
+		LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(out.toByteArray()));
+	}
+
+	/**
+	 * Points every relative {@code *.pattern} (FileHandler log file) at {@code logDir}.
+	 * Absolute patterns and ones starting with a {@code %} token (%h, %t) are kept.
+	 *
+	 * @return whether any pattern was changed
+	 */
+	static boolean relocateRelativeLogFiles(Properties props, Path logDir)
+	{
+		boolean changed = false;
+		for (String key : props.stringPropertyNames())
+		{
+			String pattern = props.getProperty(key).trim();
+			if (key.endsWith(".pattern") && !pattern.startsWith("%") && !Path.of(pattern).isAbsolute())
+			{
+				// '%' is FileHandler's escape character
+				props.setProperty(key, logDir.resolve(pattern).toString().replace("%", "%%"));
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	/** The per-user directory for log files of a packaged launch. */
+	static Path userLogDir()
+	{
+		if (SystemUtils.IS_OS_MAC)
+		{
+			return Path.of(SystemUtils.USER_HOME, "Library", "Logs", "PCGen");
+		}
+		if (SystemUtils.IS_OS_WINDOWS)
+		{
+			String localAppData = System.getenv("LOCALAPPDATA");
+			return (localAppData == null || localAppData.isBlank())
+					? Path.of(SystemUtils.USER_HOME, "AppData", "Local", "PCGen")
+					: Path.of(localAppData, "PCGen");
+		}
+		// freedesktop: logs are state data
+		String stateHome = System.getenv("XDG_STATE_HOME");
+		return (stateHome == null || stateHome.isBlank())
+				? Path.of(SystemUtils.USER_HOME, ".local", "state", "pcgen")
+				: Path.of(stateHome, "pcgen");
 	}
 
 	private static Stream<Path> candidateConfigDirs(String userDir, String javaHome)

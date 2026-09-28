@@ -195,7 +195,7 @@ public final class ConfigurationSettings extends PropertyContext
 	}
 
 	/** The resolved install-root directory (java.home walk, else user.dir). */
-	private static Path installRootPath()
+	static Path installRootPath()
 	{
 		// java.home cannot change while the JVM runs, so resolve once: the walk
 		// hits the filesystem and every @-prefixed path expansion asks for it.
