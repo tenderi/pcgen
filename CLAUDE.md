@@ -9,8 +9,8 @@ contribute upstream**.
 
 - Remotes: `fork` = the personal fork (the only remote to push to); `origin` = upstream
   `PCGen/pcgen`, **read-only** (fetch/pull `master` from it, nothing else).
-- All work is committed on the local branch `local`, which tracks **`fork/master`** (the fork's
-  main branch holds our work). Push with `git push fork local:master` (or plain `git push`
+- All work is committed on the local branch `local`, which tracks **`fork/main`** (the fork's
+  main branch holds our work). Push with `git push fork local:main` (or plain `git push`
   with `push.default=upstream`). `fork/local` is an old copy of the branch and is no longer used.
 - Never push to `origin`, never open PRs or issues against `PCGen/pcgen`, and never create
   branches, releases or anything else upstream. Use `gh` only against the fork (pass
@@ -161,7 +161,7 @@ throw when this is violated. The exception lands in the log (`pcgen.log` / conso
 ```bash
 git checkout master && git pull --ff-only origin master   # read-only use of upstream
 git checkout local && git rebase master                   # resolve conflicts, keep both sides
-git push --force-with-lease fork local:master             # rebase rewrote local; fork is personal
+git push --force-with-lease fork local:main               # rebase rewrote local; fork is personal
 ./gradlew run
 ```
 
