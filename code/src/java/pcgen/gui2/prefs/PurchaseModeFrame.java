@@ -23,6 +23,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
@@ -92,9 +93,13 @@ public final class PurchaseModeFrame extends JDialog
 	private int statMax = PurchaseModeFrame.STANDARD_MAX_PURCHASE_SCORE;
 
 	/** Creates new form PurchaseModeFrame
+	 *
+	 * @param owner the window to stay in front of (the Preferences dialog); without an
+	 *              owner the window manager may stack it behind that modal dialog
 	 */
-	PurchaseModeFrame()
+	PurchaseModeFrame(Window owner)
 	{
+		super(owner);
 		initComponents();
 	}
 

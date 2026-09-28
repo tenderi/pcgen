@@ -253,7 +253,7 @@ public final class CharacterStatsPanel extends PCGenPrefsPanel
 	{
 		if (pmsFrame == null)
 		{
-			pmsFrame = new PurchaseModeFrame();
+			pmsFrame = new PurchaseModeFrame(SwingUtilities.getWindowAncestor(this));
 			final GameMode gameMode = SettingsHandler.getGameAsProperty().get();
 
 			pmsFrame.setStatMin(gameMode.getStatMin());
@@ -274,7 +274,7 @@ public final class CharacterStatsPanel extends PCGenPrefsPanel
 		}
 
 		pmsFrame.pack();
-		pmsFrame.setLocationRelativeTo(null);
+		pmsFrame.setLocationRelativeTo(pmsFrame.getOwner());
 		pmsFrame.setVisible(true);
 		Platform.runLater(() -> {
 			scoreListener = evt -> abilitiesAllSameButton.setSelected(true);
