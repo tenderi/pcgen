@@ -452,10 +452,14 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 			}
 
 			// Now remove math strings: + - / *
-			// and comparison strings: > = <
+			// comparison strings: > = <
+			// and logical operators: && || ! (and spaces), otherwise "A==0&&B>=3" yields the
+			// bogus variable "0&&B", the dependency on B is missed, and the bonus may be
+			// evaluated before B's bonuses (e.g. a sorcerer's level 3 bloodline power
+			// randomly missing)
 			// remember, a StringTokenizer will tokenize
 			// on any of the found delimiters
-			final StringTokenizer mTok = new StringTokenizer(controlString, "+-/*>=<\"");
+			final StringTokenizer mTok = new StringTokenizer(controlString, "+-/*>=<\"&|! ");
 
 			while (mTok.hasMoreTokens())
 			{

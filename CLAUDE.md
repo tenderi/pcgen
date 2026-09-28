@@ -148,6 +148,11 @@ changed. Revisit only together with that ordering problem.
 Caveat found later: those three rsrdinttest cases also fail *without* any scope change when all
 five `*inttest` suites run in one Gradle invocation, but pass when `rsrdinttest` runs alone. So
 the narrow variant may have been fine. Judge it with `./gradlew rsrdinttest` run on its own.
+Since the bonus dependency fix (`BonusObj.buildDependMap` now also splits on `& | !` and spaces), those
+three fail in the test harness even when `rsrdinttest` runs alone (Jump misc −18: `MOVE[Walk]` read as
+0), while a normal batch export of the same characters gives the expected values (checked for
+Quasvin and JimDop). It's an order-sensitive harness quirk (the harness loads every plugin twice),
+not a user-visible regression.
 
 **Threading rule these fixes follow:** a JavaFX handler (`setOnAction`, `OKCloseButtonBar`, `@FXML`)
 runs on the FX thread. Anything touching Swing components, chooser/character facades or
