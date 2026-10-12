@@ -5309,12 +5309,9 @@ public final class Equipment extends PObject
 
 		final List<Equipment> contents = new ArrayList<>(getContents());
 
-		if (!contents.isEmpty())
+		if ((index >= 0) && (index < contents.size()))
 		{
-			if (index <= contents.size())
-			{
-				return contents.get(index);
-			}
+			return contents.get(index);
 		}
 
 		return null;

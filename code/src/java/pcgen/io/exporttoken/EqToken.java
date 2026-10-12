@@ -587,7 +587,8 @@ public class EqToken extends Token
 			try
 			{
 				int contentsIndex = Integer.parseInt(bType);
-				return getEqToken(pc, eq.getContainedByIndex(contentsIndex), aSubTag, tokenizer);
+				Equipment contained = eq.getContainedByIndex(contentsIndex);
+				return (contained == null) ? "" : getEqToken(pc, contained, aSubTag, tokenizer);
 			}
 			catch (NumberFormatException e)
 			{

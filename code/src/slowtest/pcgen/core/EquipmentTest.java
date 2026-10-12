@@ -657,4 +657,23 @@ assertNotNull(eqMod, "Eqmod should be present");
 	{
 		//Nothing, we will trigger ourselves
 	}
+
+	/**
+	 * Asking for a contents index past the last item (EQ.x.CONTENTS.n on output
+	 * sheets) must give null, not throw.
+	 */
+	@Test
+	public void testGetContainedByIndexOutOfRange()
+	{
+		GenericLoader<Equipment> eqLoader = new GenericLoader<>(Equipment.class);
+		eqLoader.parseLine(Globals.getContext(), null,
+			"Quiver	KEY:TestQuiver	TYPE:Goods.Container	SIZE:M	CONTAINS:UNLIM", source);
+		Equipment quiver = Globals.getContext().getReferenceContext()
+			.silentlyGetConstructedCDOMObject(Equipment.class, "TestQuiver");
+		quiver.insertChild(getCharacter(), eq.clone());
+
+		assertSame(eq.getKeyName(), quiver.getContainedByIndex(0).getKeyName());
+		assertEquals(null, quiver.getContainedByIndex(1));
+		assertEquals(null, quiver.getContainedByIndex(-1));
+	}
 }
