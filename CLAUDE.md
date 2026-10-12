@@ -194,6 +194,19 @@ Sheet tab uses `preview/d20/fantasy/Standard.htm.ftl` for Pathfinder (`PREVIEWSH
 `firefox --headless --screenshot --window-size=1000,5200`. Known, unfixed cosmetics: the legacy
 `compact.htm` / `Spellbook.htm` previews print an empty "(DC: )" (inside FOR-loop strings, hard to
 make conditional). `CLASSLIST` prints "Sorcerer3" by design ("Fighter3 Wizard2").
+To sweep many sheets, skip Gradle per run: print `sourceSets.main.runtimeClasspath` once (init script),
+then run `java --module-path mods/lib --add-modules javafx.controls,javafx.web,javafx.swing,javafx.fxml,javafx.graphics
+-cp <cp> pcgen.system.Main -s <scratch>/settings --character … --exportsheet … --outputfile …` per job (a
+private scratch settings dir each, ~7 s alone, ~1–2 min with 6–8 in parallel for a 17-book PF character), and
+grep the console for `SEVERE|Exception|rc≠0`. XSLT entry points compile-check with
+`net.sf.saxon.Transform -xsl:<csheet_*.xslt> -nogo` (masters alone fail on `$vAttribs`; that's expected).
+Known, unfixed: the Fantasy Craft PDF sheet (missing `inc_pagedimensions.xslt`, undefined `equipment.title`),
+the 4e and Starfinder `csheet_fantasy_std_companion_box_first_page.xslt` (their master never existed), and
+OpenRPG's `WEAPON.x.TOTALDAMAGE` (not a token; inside an IIF the author marked as not working). Log noise:
+`InfoModel ... does not have INFO of type Normal/Special` (FantasyGrounds feats without that text; output
+is just empty), and a JavaFX `EmbeddedScene.setPixelScaleFactors` NPE on new-character creation (JavaFX
+internal race, no visible effect). Old test files (`35e_Quasvin`, `pf_Cleric`) log missing ability
+categories/equip slots on load; that's file age, not a bug.
 PDF export log noise that is harmless: FOP's `SEVERE ... forcing opt to min in LengthRange` (FOP
 picks the valid value; it logs via the shared `org.apache.fop.fo.properties.PropertyMaker` logger, so
 don't silence that logger, it also carries real template errors) and `[FOP] ... exceed the available
