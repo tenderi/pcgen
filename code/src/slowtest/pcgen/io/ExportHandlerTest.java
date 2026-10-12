@@ -427,6 +427,35 @@ class ExportHandlerTest extends AbstractCharacterTestCase
 
 	}
 
+	/**
+	 * A negative value such as "-2" looks like an attack routine to math mode;
+	 * .INTVAL must still give a plain number there.
+	 */
+	@Test
+	void testIntvalAfterNegativeValue() throws IOException
+	{
+		final PlayerCharacter pc = getCharacter();
+		setPCStat(pc, str, 7);
+		pc.calcActiveBonuses();
+		assertEquals("-2", evaluateMath("STAT.0.MOD", pc));
+		assertEquals("0", evaluateMath("STAT.0.MOD-STAT.0.MOD.INTVAL", pc));
+		assertEquals("1", evaluateMath("STAT.0.MOD+3.INTVAL", pc));
+		assertEquals("+1", evaluateMath("STAT.0.MOD+3", pc), "Attack-style output is kept without .INTVAL");
+	}
+
+	/**
+	 * Evaluate a token the way an output sheet does, including math mode.
+	 */
+	private static String evaluateMath(String token, PlayerCharacter pc) throws IOException
+	{
+		StringWriter retWriter = new StringWriter();
+		try (BufferedWriter bufWriter = new BufferedWriter(retWriter))
+		{
+			ExportHandler.createExportHandler(new File("")).replaceToken(token, bufWriter, pc);
+		}
+		return retWriter.toString();
+	}
+
 	@Test
 	void testPartyFor() throws IOException
 	{

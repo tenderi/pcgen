@@ -964,7 +964,8 @@ public abstract class ExportHandler
 					{
 						if (attackRoutine)
 						{
-							Logging.errorPrint("Math Mode Error: Not allowed to use .TRUNC in Attack Mode.");
+							// Attack values are already whole numbers
+							valString = valString.substring(0, valString.length() - 6);
 						}
 						else
 						{
@@ -978,7 +979,8 @@ public abstract class ExportHandler
 					{
 						if (attackRoutine)
 						{
-							Logging.errorPrint("Math Mode Error: Using .INTVAL in Attack Mode.");
+							// Attack values are already whole numbers
+							valString = valString.substring(0, valString.length() - 7);
 						}
 						else
 						{
@@ -1132,6 +1134,11 @@ public abstract class ExportHandler
 
 		if (attackRoutine)
 		{
+			// A single value such as "-2" also looks like an attack; .INTVAL asks for a plain number
+			if ((endMode == INTVAL_MODE) && (attackData.indexOf('/') < 0))
+			{
+				return Integer.toString(Integer.parseInt(attackData.replace("+", "")));
+			}
 			return attackData;
 		}
 		if (endMode == INTVAL_MODE)
