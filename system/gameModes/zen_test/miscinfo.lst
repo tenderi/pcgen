@@ -144,6 +144,7 @@ ACTYPE:Deflection				ADD:Deflection
 ACTYPE:Misc					ADD:TOTAL		REMOVE:Base|Armor|Shield|Ability|Size|NaturalArmor|NaturalArmorEnhancement|Deflection|Dodge|ShieldEnhancement|ArmorEnhancement
 ACTYPE:Circumstance			ADD:Circumstance
 ACTYPE:Insight				ADD:Insight
+ACTYPE:Luck					ADD:Luck
 ACTYPE:Morale				ADD:Morale
 ACTYPE:Profane				ADD:Profane
 ACTYPE:Sacred				ADD:Sacred

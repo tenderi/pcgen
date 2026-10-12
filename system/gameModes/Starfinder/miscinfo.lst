@@ -171,6 +171,7 @@ ACTYPE:Dodge				ADD:Dodge
 ACTYPE:Deflection				ADD:Deflection				
 ACTYPE:Circumstance			ADD:Circumstance			
 ACTYPE:Insight				ADD:Insight				
+ACTYPE:Luck					ADD:Luck
 ACTYPE:Morale				ADD:Morale				
 ACTYPE:Profane				ADD:Profane				
 ACTYPE:Sacred				ADD:Sacred				
