@@ -50,7 +50,7 @@
 |SKILL.Listen.TOTAL.SIGN|,|SPACE|[B]Spot[/B]:|SPACE|
 |SKILL.Spot.TOTAL.SIGN|
 |ENDIF|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Sense","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|,|SPACE|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Sense","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|,|SPACE|
 |IIF(ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Sense.HASASPECT.AbilityBonus:Y)|
 |ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Sense.ASPECT.AbilityBonus|
 |ENDIF|
@@ -59,19 +59,19 @@
 |ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Sense.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Sense","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|,|SPACE|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Sense.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Sense.ASPECT.AbilityBonus|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Sense","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|,|SPACE|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Sense.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Sense.ASPECT.AbilityBonus|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Sense|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Sense.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Sense.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Sense|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Sense.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Sense.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
 |BR|
-|IIF(count("ABILITIES";"TYPE=Aura";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
+|IIF(count("ABILITIES";"TYPE=Aura";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
 [B]Aura[/B]:|SPACE|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Aura","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Aura","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
 |IIF(ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Aura.HASASPECT.AbilityBonus:Y)|
 |ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Aura.ASPECT.AbilityBonus|
 |ENDIF|
@@ -80,31 +80,31 @@
 |ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Aura.ASPECT.AbilityBenefit|
 |ENDIF|,|SPACE|
 |ENDFOR|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Aura","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Aura.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Aura.ASPECT.AbilityBonus|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Aura","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Aura.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Aura.ASPECT.AbilityBonus|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Aura|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Aura.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Aura.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Aura|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Aura.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Aura.ASPECT.AbilityBenefit|
 |ENDIF|,|SPACE|
 |ENDFOR|
 |ENDIF|
 |FOR,%LanguageTest,STRLEN[LANGUAGES],STRLEN[LANGUAGES],1,0|
 |IIF(%LanguageTest:0)|
-|IIF(count("ABILITIES";"TYPE=Communicate";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
+|IIF(count("ABILITIES";"TYPE=Communicate";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
 [B]Communication[/B]:|SPACE|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Communicate","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBonus|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Communicate","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBonus|
 |SPACE|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBenefit|
 |ENDIF|,|SPACE|
 |ENDFOR|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Communicate","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Communicate","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
 |IIF(ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBonus:Y)|
 |ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBonus|
 |SPACE|
@@ -121,16 +121,16 @@
 [B]Languages[/B]:|SPACE|
 |LANGUAGES|
 |BR|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Communicate","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBonus|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Communicate","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBonus|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBenefit|
 |ENDIF|,|SPACE|
 |ENDFOR|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Communicate","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=Communicate","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
 |IIF(ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Communicate.HASASPECT.AbilityBonus:Y)|
 |ABILITYALL.Feat.VISIBLE.%specialAbilities.TYPE=Communicate.ASPECT.AbilityBonus|
 |ENDIF|
@@ -151,18 +151,18 @@ DEFENSE<br>|BR|
 |IIF(VAR.UseCombatManueverBonus:1)|
 ,|SPACE|
 [B]CMD[/B]|SPACE|
-|VAR.(CMB+AC.Touch).INTVAL|
+|VAR.CMD.INTVAL|
 |ENDIF|
-|FOR,%ACfeats,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=ModifyAC","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|,
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%ACfeats.TYPE=ModifyAC.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%ACfeats.TYPE=ModifyAC.ASPECT.AbilityBonus|
+|FOR,%ACfeats,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=ModifyAC","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|,
+|IIF(ABILITYALL.Special Ability.VISIBLE.%ACfeats.TYPE=ModifyAC.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%ACfeats.TYPE=ModifyAC.ASPECT.AbilityBonus|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%ACfeats.TYPE=ModifyAC|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%ACfeats.TYPE=ModifyAC.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%ACfeats.TYPE=ModifyAC.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%ACfeats.TYPE=ModifyAC|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%ACfeats.TYPE=ModifyAC.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%ACfeats.TYPE=ModifyAC.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
-|FOR,%ACfeats,0,count("ABILITIES","CATEGORY=Feat","TYPE=ModifyAC","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|,
+|FOR,%ACfeats,0,count("ABILITIES","CATEGORY=Feat","TYPE=ModifyAC","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|,
 |IIF(ABILITYALL.Feat.VISIBLE.%ACfeats.TYPE=ModifyAC.HASASPECT.AbilityBonus:Y)|
 |ABILITYALL.Feat.VISIBLE.%ACfeats.TYPE=ModifyAC.ASPECT.AbilityBonus|
 |ENDIF|
@@ -191,34 +191,34 @@ DEFENSE<br>|BR|
 |CHECK.REFLEX.TOTAL|,|SPACE|[B]Will[/B]:|SPACE|
 |CHECK.2.TOTAL|
 |BR|
-|IIF(count("ABILITIES";"TYPE=Immunity";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|[B]Immunities[/B]:|SPACE|
-|FOR,%immunities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Immunity","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity.ASPECT.AbilityBonus|
+|IIF(count("ABILITIES";"TYPE=Immunity";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|[B]Immunities[/B]:|SPACE|
+|FOR,%immunities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Immunity","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity.ASPECT.AbilityBonus|
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity.HASASPECT.Immunity:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity.ASPECT.Immunity|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity.HASASPECT.Immunity:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity.ASPECT.Immunity|
 |ELSE|
-|ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity|
+|ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity|
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%immunities.TYPE=Immunity.ASPECT.AbilityBenefit|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%immunities.TYPE=Immunity.ASPECT.AbilityBenefit|
 |ENDIF|,
 |ENDFOR|
 |BR|
 |ENDIF|
-|IIF(count("ABILITIES";"TYPE=Resistance";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|[B]Resistances[/B]:|SPACE|
-|FOR,%resistances,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Resistance","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance.ASPECT.AbilityBonus|
+|IIF(count("ABILITIES";"TYPE=Resistance";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|[B]Resistances[/B]:|SPACE|
+|FOR,%resistances,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Resistance","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance.ASPECT.AbilityBonus|
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance.HASASPECT.Resistance:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance.ASPECT.Resistance|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance.HASASPECT.Resistance:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance.ASPECT.Resistance|
 |ELSE|
-|ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance|
+|ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance|
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%resistances.TYPE=Resistance.ASPECT.AbilityBenefit|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%resistances.TYPE=Resistance.ASPECT.AbilityBenefit|
 |ENDIF|,
 |ENDFOR|
 |BR|
@@ -228,14 +228,14 @@ DEFENSE<br>|BR|
 |SR|
 |BR|
 |ENDIF|
-|IIF(count("ABILITIES";"TYPE=Weakness";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|[B]Weakness[/B]:|SPACE|
-|FOR,%weaknesses,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=Weakness","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%weaknesses.TYPE=Weakness.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%weaknesses.TYPE=Weakness.ASPECT.AbilityBonus|
+|IIF(count("ABILITIES";"TYPE=Weakness";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|[B]Weakness[/B]:|SPACE|
+|FOR,%weaknesses,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Weakness","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%weaknesses.TYPE=Weakness.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%weaknesses.TYPE=Weakness.ASPECT.AbilityBonus|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%weaknesses.TYPE=Weakness|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%weaknesses.TYPE=Weakness.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%weaknesses.TYPE=Weakness.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%weaknesses.TYPE=Weakness|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%weaknesses.TYPE=Weakness.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%weaknesses.TYPE=Weakness.ASPECT.AbilityBenefit|
 |ENDIF|,
 |ENDFOR|
 |BR|
@@ -271,10 +271,10 @@ OFFENSE<br>|BR|
 |SPACE|Squares)
 |ENDIF|
 |IIF(MOVE.%movement.NAME:Fly)|
-|SPACE|(|ABILITYALL.SpecialAbility.HIDDEN.0.TYPE=Maneuverability.ASPECT.Maneuverability|)
+|SPACE|(|ABILITYALL.Special Ability.HIDDEN.0.TYPE=Maneuverability.ASPECT.Maneuverability|)
 |ENDIF|
 |ENDFOR|
-|FOR,%movementAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=ModifyMovement","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|,
+|FOR,%movementAbilities,0,count("ABILITIES","CATEGORY=Feat","TYPE=ModifyMovement","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|,
 |IIF(ABILITYALL.Feat.VISIBLE.%movementAbilities.TYPE=ModifyMovement.HASASPECT.AbilityBonus:Y)|
 |ABILITYALL.Feat.VISIBLE.%movementAbilities.TYPE=ModifyMovement.ASPECT.AbilityBonus|
 |ENDIF|
@@ -283,13 +283,13 @@ OFFENSE<br>|BR|
 |ABILITYALL.Feat.VISIBLE.%movementAbilities.TYPE=ModifyMovement.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
-|FOR,%movementAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=ModifyMovement","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|,
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%movementAbilities.TYPE=ModifyMovement.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%movementAbilities.TYPE=ModifyMovement.ASPECT.AbilityBonus|
+|FOR,%movementAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=ModifyMovement","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|,
+|IIF(ABILITYALL.Special Ability.VISIBLE.%movementAbilities.TYPE=ModifyMovement.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%movementAbilities.TYPE=ModifyMovement.ASPECT.AbilityBonus|
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%movementAbilities.TYPE=ModifyMovement|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%movementAbilities.TYPE=ModifyMovement.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%movementAbilities.TYPE=ModifyMovement.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%movementAbilities.TYPE=ModifyMovement|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%movementAbilities.TYPE=ModifyMovement.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%movementAbilities.TYPE=ModifyMovement.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
 |FOR,%weap,0,COUNT[EQTYPE.Weapon]-1,1,0|
@@ -351,11 +351,11 @@ Melee|SPACE|
 |ELSE|
 --
 |ENDIF|
-|IIF(count("ABILITIES";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
+|IIF(count("ABILITIES";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
 [B]Atk|SPACE|Options[/B]:|SPACE|
-|IIF(count("ABILITIES";"CATEGORY=Feat";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
-|IIF(count("ABILITIES";"CATEGORY=Feat";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>1)|
-|FOR,%attackOptions,0,count("ABILITIES","CATEGORY=Feat","TYPE=AttackOption","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-2,1,0|
+|IIF(count("ABILITIES";"CATEGORY=Feat";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Feat";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>1)|
+|FOR,%attackOptions,0,count("ABILITIES","CATEGORY=Feat","TYPE=AttackOption","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-2,1,0|
 |IIF(ABILITYALL.Feat.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBonus:Y)|
 |SPACE|
 |ABILITYALL.Feat.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBonus|
@@ -369,7 +369,7 @@ Melee|SPACE|
 |ENDIF|,|SPACE|
 |ENDFOR|
 |ENDIF|
-|FOR,%attackOptions,count("ABILITIES","CATEGORY=Feat","TYPE=AttackOption","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,count("ABILITIES","CATEGORY=Feat","TYPE=AttackOption","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
+|FOR,%attackOptions,count("ABILITIES","CATEGORY=Feat","TYPE=AttackOption","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,count("ABILITIES","CATEGORY=Feat","TYPE=AttackOption","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
 |IIF(ABILITYALL.Feat.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBonus:Y)|
 |SPACE|
 |ABILITYALL.Feat.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBonus|
@@ -383,77 +383,77 @@ Melee|SPACE|
 |ENDIF|
 |ENDFOR|
 |ENDIF|
-|IIF(count("ABILITIES";"CATEGORY=Feat";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|,|SPACE|
+|IIF(count("ABILITIES";"CATEGORY=Feat";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|,|SPACE|
 |ENDIF|
 |ENDIF|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>1)|
-|FOR,%attackOptions,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=AttackOption","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-2,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBonus:Y)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>1)|
+|FOR,%attackOptions,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=AttackOption","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-2,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBonus:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBonus|
+|ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBonus|
 |SPACE|
 |ENDIF|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBenefit:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBenefit|
 |ENDIF|,|SPACE|
 |ENDFOR|
 |ENDIF|
-|FOR,%attackOptions,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=AttackOption","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=AttackOption","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBonus:Y)|
+|FOR,%attackOptions,count("ABILITIES","CATEGORY=Special Ability","TYPE=AttackOption","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,count("ABILITIES","CATEGORY=Special Ability","TYPE=AttackOption","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBonus:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBonus|
+|ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBonus|
 |SPACE|
 |ENDIF|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.HASASPECT.AbilityBenefit:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%attackOptions.TYPE=AttackOption.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
 |ENDIF|
 |ENDIF|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=AttackOption";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY"))|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>count("ABILITIES";"CATEGORY=Special Ability";"TYPE=AttackOption";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY"))|
 |SPACE|
 |BR|
 [B]Special|SPACE|Actions[/B]:|SPACE|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>1)|
-|FOR,%specialActions,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=SpecialAttack","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-2,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.TYPE:AttackOption)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>1)|
+|FOR,%specialActions,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialAttack","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-2,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.TYPE:AttackOption)|
 |ELSE|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBonus:Y)|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBonus:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBonus|
+|ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBonus|
 |SPACE|
 |ENDIF|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBenefit:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBenefit|
 |ENDIF|,|SPACE|
 |ENDIF|
 |ENDFOR|
 |ENDIF|
-|FOR,%specialActions,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=SpecialAttack","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=SpecialAttack","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.TYPE:AttackOption)|
+|FOR,%specialActions,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialAttack","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialAttack","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.TYPE:AttackOption)|
 |ELSE|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBonus:Y)|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBonus:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBonus|
+|ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBonus|
 |SPACE|
 |ENDIF|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.HASASPECT.AbilityBenefit:Y)|
 |SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialActions.TYPE=SpecialAttack.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDIF|
 |ENDFOR|
@@ -541,26 +541,26 @@ STATISTICS<br>|BR|
 |FOR,%stat,COUNT[STATS]-1,COUNT[STATS]-1,1,1|
 |TEXT.TITLECASE.STAT.%stat.NAME||SPACE||STAT.%stat|
 |ENDFOR|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
 [B]Special|SPACE|Qualities[/B]:|SPACE|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>1)|
-|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=SpecialQuality","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-2,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBonus| 
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>1)|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialQuality","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-2,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBonus| 
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBenefit|
 |ENDIF|, 
 |ENDFOR|
 |ENDIF|
-|FOR,%specialAbilities,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=SpecialQuality","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,count("ABILITIES","CATEGORY=SpecialAbility","TYPE=SpecialQuality","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBonus:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBonus| 
+|FOR,%specialAbilities,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialQuality","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialQuality","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBonus:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBonus| 
 |ENDIF|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBenefit:Y)|
-|ABILITYALL.SpecialAbility.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBenefit|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.HASASPECT.AbilityBenefit:Y)|
+|ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.ASPECT.AbilityBenefit|
 |ENDIF|
 |ENDFOR|
 |ENDIF|
@@ -570,15 +570,15 @@ STATISTICS<br>|BR|
 |%|[B]Feats[/B]:|SPACE||FEATALLLIST|
 |BR|
 [B]Skills[/B]:|SPACE|
-|IIF(VAR.IF(VAR("COUNT[SKILL]")>1;1;0):1)|
-|FOR,%skill,0,COUNT[SKILL]-2,1,0|
+|IIF(VAR.IF(VAR("COUNT[SKILLS]")>1;1;0):1)|
+|FOR,%skill,0,COUNT[SKILLS]-2,1,0|
 |IIF(VAR.IF(var("SKILL.%skill.TOTAL")==0;1;0):1)|
 |ELSE|
 |SKILL.%skill||SPACE||SKILL.%skill.TOTAL.INTVAL.SIGN|,|SPACE|
 |ENDIF|
 |ENDFOR|
 |ENDIF|
-|FOR,%skill,COUNT[SKILL]-1,COUNT[SKILL]-1,1,0|
+|FOR,%skill,COUNT[SKILLS]-1,COUNT[SKILLS]-1,1,0|
 |IIF(VAR.IF(var("SKILL.%skill.TOTAL")==0;1;0):1)|
 |ELSE||SKILL.%skill||SPACE||SKILL.%skill.TOTAL.INTVAL.SIGN|
 |ENDIF|
@@ -601,46 +601,46 @@ STATISTICS<br>|BR|
 =================================================<br>|BR|
 SPECIAL|SPACE|ABILITIES<br>|BR|
 =================================================<br>|BR|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY";"TYPE=AbilityBonus")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY";"TYPE=AbilityBonus")>0)|
 [B]Ability Bonuses[/B]:|SPACE|
-|FOR,%allAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:AbilityBonus)|
-|ABILITYALL.SpecialAbility.VISIBLE.%allAbilities| 
+|FOR,%allAbilities,0,count("ABILITIES","CATEGORY=Special Ability","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:AbilityBonus)|
+|ABILITYALL.Special Ability.VISIBLE.%allAbilities| 
 |ENDIF|
 |ENDFOR|
 |BR|
 |ENDIF|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY";"TYPE=FavoredClass")>0)|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY";"TYPE=FavoredClass")>0)|
 [B]Favored Classes[/B]:|SPACE|
-|FOR,%allAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:FavoredClass)|
-|ABILITYALL.SpecialAbility.VISIBLE.%allAbilities| 
+|FOR,%allAbilities,0,count("ABILITIES","CATEGORY=Special Ability","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:FavoredClass)|
+|ABILITYALL.Special Ability.VISIBLE.%allAbilities| 
 |ENDIF|
 |ENDFOR|
 |BR|
 |ENDIF|
-|IIF(count("ABILITIES";"CATEGORY=SpecialAbility";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")>count("ABILITIES";"CATEGORY=SpecialAbility";"VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY";"TYPE=FavoredClass.or.TYPE=AbilityBonus"))|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>count("ABILITIES";"CATEGORY=Special Ability";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY";"TYPE=FavoredClass[or]TYPE=AbilityBonus"))|
 |BR|
-|FOR,%allAbilities,0,count("ABILITIES","CATEGORY=SpecialAbility","VISIBILITY=DEFAULT.or.VISIBILITY=OUTPUTONLY")-1,1,0|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:AbilityBonus)|
+|FOR,%allAbilities,0,count("ABILITIES","CATEGORY=Special Ability","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:AbilityBonus)|
 |ELSE|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:FavoredClass)|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:FavoredClass)|
 |ELSE|
-|ABILITYALL.SpecialAbility.VISIBLE.%allAbilities|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:Extraordinary)||SPACE|
+|ABILITYALL.Special Ability.VISIBLE.%allAbilities|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:Extraordinary)||SPACE|
 (Ex)
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:Supernatural)||SPACE|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:Supernatural)||SPACE|
 (Su)
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:SpellLike)||SPACE|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:SpellLike)||SPACE|
 (Sp)
 |ENDIF|
-|IIF(ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.TYPE:PsiLike)||SPACE|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%allAbilities.TYPE:PsiLike)||SPACE|
 (Ps)
 |ENDIF||SPACE|
-[I][|ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.SOURCE|][/I]|SPACE|
-|ABILITYALL.SpecialAbility.VISIBLE.%allAbilities.DESC|
+[I][|ABILITYALL.Special Ability.VISIBLE.%allAbilities.SOURCE|][/I]|SPACE|
+|ABILITYALL.Special Ability.VISIBLE.%allAbilities.DESC|
 |BR|
 |ENDIF|
 |ENDIF|

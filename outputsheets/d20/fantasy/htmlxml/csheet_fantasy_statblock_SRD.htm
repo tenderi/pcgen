@@ -349,7 +349,7 @@ Str |STAT.0|, Dex |STAT.1|, Con |STAT.2|, Int |STAT.3|, Wis |STAT.4|, Cha |STAT.
     	<td width="75%">
 
 <!--   Trouble-shooting stuff   
-|FOR.0,COUNT[SKILL],100,\SKILL.%.NAME\ \SKILL.%.TOTAL.INTVAL.SIGN\;       , , ,0| 
+|FOR.0,COUNT[SKILLS],100,\SKILL.%.NAME\ \SKILL.%.TOTAL.INTVAL.SIGN\;       , , ,0| 
 -->
 |FOR,%skill,0,${count("SKILLSIT", "VIEW=VISIBLE_EXPORT")-1},1,0|
 |IIF(SKILLSIT.%skill.TYPE:SkillUse)|

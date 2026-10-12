@@ -216,7 +216,7 @@
 				<type type="string">Combat</type>
 	<#elseif (pcstring('ABILITYALL.FEAT.VISIBLE.${feat}.TYPE')?lower_case?contains("metamagic"))>
 				<type type="string">Metamagic</type>
-	<#elseif (pcstring('ABILITYALL.Mythic Feat.VISIBLE.${mythicFeat}.TYPE')?lower_case?contains("mythic"))>
+	<#elseif (pcstring('ABILITYALL.FEAT.VISIBLE.${feat}.TYPE')?lower_case?contains("mythic"))>
 				<type type="string">Mythic</type>
 	<#else>
 				<type type="string">General</type>
