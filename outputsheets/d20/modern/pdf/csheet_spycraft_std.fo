@@ -39,7 +39,7 @@
 					<fo:table-row>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt">
 							<fo:block font-size="5pt" font-weight="bold">|EXPORT.DATE| |EXPORT.TIME|</fo:block>
-							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="true" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
+							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="new" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
 						</fo:table-cell>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt" wrap-option="wrap">
 							<fo:block text-align="center" font-size="5pt">
@@ -2024,7 +2024,7 @@
 					<fo:table-row>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt">
 							<fo:block font-size="5pt" font-weight="bold">|EXPORT.DATE| |EXPORT.TIME|</fo:block>
-							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="true" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
+							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="new" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
 						</fo:table-cell>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt" wrap-option="wrap">
 							<fo:block text-align="center" font-size="5pt">
@@ -3566,7 +3566,7 @@
 					<fo:table-row>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt">
 							<fo:block font-size="5pt" font-weight="bold">|EXPORT.DATE| |EXPORT.TIME|</fo:block>
-							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="true" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
+							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="new" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
 						</fo:table-cell>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt" wrap-option="wrap">
 							<fo:block text-align="center" font-size="5pt">
@@ -3903,7 +3903,7 @@
 					<fo:table-row>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt">
 							<fo:block font-size="5pt" font-weight="bold">|EXPORT.DATE| |EXPORT.TIME|</fo:block>
-							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="true" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
+							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="new" color="blue" text-decoration="underline">PCGen</fo:basic-link> |EXPORT.VERSION|</fo:block>
 						</fo:table-cell>
 						<fo:table-cell background-color="white" padding-top="2pt" border-top-color="black" color="black" border-top-style="solid" border-top-width="0.5pt" wrap-option="wrap">
 							<fo:block text-align="center" font-size="5pt">

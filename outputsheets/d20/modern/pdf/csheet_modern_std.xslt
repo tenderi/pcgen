@@ -15,7 +15,6 @@
 	xmlns:myAttribs="my:Attribs"
 	exclude-result-prefixes="myAttribs Psionics">
 
-	<xsl:import href="../../fantasy/pdf/leadership.xsl"/>
 
 	<xsl:output indent="yes"/>
 	<!-- Include all of the output attributes -->
@@ -34,7 +33,6 @@
 	<xsl:variable name="vAttribs_tree">
 		<myAttribs:myAttribs>
 			<xsl:copy-of select="$vAttribs/*"/>
-			<xsl:copy-of select="document('../../fantasy/pdf/leadership.xsl')/*/myAttribs:*/*"/>
 		</myAttribs:myAttribs>
 	</xsl:variable>
 	<xsl:variable name="vAttribs_all" select="exsl:node-set($vAttribs_tree)"/>
@@ -1216,7 +1214,7 @@
 								<xsl:text> </xsl:text>
 								<xsl:value-of select="export/time" />
 							</fo:block>
-							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="true" color="blue" text-decoration="underline">PCGen</fo:basic-link> <xsl:value-of select="export/version"/></fo:block>
+							<fo:block font-size="5pt" font-weight="bold">Created using <fo:basic-link external-destination="http://pcgen.org/" show-destination="new" color="blue" text-decoration="underline">PCGen</fo:basic-link> <xsl:value-of select="export/version"/></fo:block>
 						</fo:table-cell>
 						<fo:table-cell text-align="center" wrap-option="no-wrap" border-top-color="black" border-top-style="solid" border-top-width="0.1pt" background-color="white" padding-top="2pt">
 							<fo:block text-align="center" font-size="5pt">PCGen Character Template by Frugal, based on work by ROG, Arcady, Barak &amp; Dimrill.</fo:block>
@@ -1291,11 +1289,11 @@
 							<fo:block font-size="8pt" padding-top="3pt"><xsl:value-of select="poolpoints/cost"/></fo:block>
 						</fo:table-cell>
 
-						<xsl:if test="string-length(portrait) &gt; 0" >
+						<xsl:if test="string-length(portrait/portrait_thumb) &gt; 0" >
 							<fo:table-cell/>
 							<fo:table-cell number-rows-spanned="6"  xsl:use-attribute-sets="picture">
 								<fo:block>
-								<xsl:variable name="portrait_file" select="portrait" />
+								<xsl:variable name="portrait_file" select="portrait/portrait_thumb" />
 									<fo:external-graphic src="file:{$portrait_file}" width="22mm"/>
 								</fo:block>
 							</fo:table-cell>
@@ -3624,20 +3622,6 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template name="mutation.darkline">
-		<xsl:param name="content"/>
-		<fo:table-row xsl:use-attribute-sets="mutation.darkline" keep-with-next.within-column="always">
-			<xsl:copy-of select="$content"/>
-		</fo:table-row>
-	</xsl:template>
-
-	<xsl:template name="mutation.lightline">
-		<xsl:param name="content"/>
-		<fo:table-row xsl:use-attribute-sets="mutation.lightline" keep-with-next.within-column="always">
-			<xsl:copy-of select="$content"/>
-		</fo:table-row>
-	</xsl:template>
-
 <!--
 ====================================
 ====================================
@@ -4815,10 +4799,10 @@
 							<fo:table-body>
 
 								<fo:table-row>
-									<xsl:if test="string-length(portrait) &gt; 0">
+									<xsl:if test="string-length(portrait/portrait) &gt; 0">
 										<fo:table-cell display-align="center" xsl:use-attribute-sets="picture" number-rows-spanned="36">
 											<fo:block start-indent="1mm" height="100mm">
-												<xsl:variable name="portrait_file" select="portrait" />
+												<xsl:variable name="portrait_file" select="portrait/portrait" />
 												<fo:external-graphic src="file:{$portrait_file}" width="92mm" scaling="uniform" />
 											</fo:block>
 										</fo:table-cell>
