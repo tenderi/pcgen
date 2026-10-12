@@ -121,6 +121,20 @@ public final class ExportUtilities
 		return defaultObjectWrapperBuilder.build();
 	}
 
+	/**
+	 * @return the current game mode's output sheet folder (holding pdf/, text/ and htmlxml/),
+	 * or the outputsheets folder itself when the game mode names none
+	 */
+	public static File getGameModeSheetDir()
+	{
+		String outputSheetDirectory = SettingsHandler.getGameAsProperty().get().getOutputSheetDirectory();
+		if (outputSheetDirectory == null)
+		{
+			return new File(ConfigurationSettings.getOutputSheetsDir());
+		}
+		return new File(ConfigurationSettings.getOutputSheetsDir(), outputSheetDirectory);
+	}
+
 	public static File templateToAbsoluteTemplate(String sheetFilterPath, URI relativeURI)
 	{
 		File osDir;

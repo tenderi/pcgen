@@ -26,7 +26,10 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.Scene?>
@@ -51,6 +54,29 @@
             <!-- vgrow + maxHeight let the list consume free vertical space so the buttons stay pinned at the bottom. -->
             <TitledPane text="%in_templates" collapsible="false" VBox.vgrow="ALWAYS" maxHeight="Infinity">
                 <ListView fx:id="templateSelect"/>
+            </TitledPane>
+
+            <!-- One-button export with the per-game-mode defaults; every change is remembered. -->
+            <TitledPane fx:id="exportAllPane" text="%in_exportAll" collapsible="false">
+                <GridPane hgap="6.0" vgap="6.0">
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <CheckBox fx:id="exportAllPdf" text="%in_exportAllPdf" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <ComboBox fx:id="exportAllPdfSheet" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                    <CheckBox fx:id="exportAllText" text="%in_exportAllText" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <ComboBox fx:id="exportAllTextSheet" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                    <CheckBox fx:id="exportAllPcg" text="%in_exportAllPcg" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3" />
+                    <Label labelFor="$exportAllFolder" text="%in_exportAllFolder" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                    <TextField fx:id="exportAllFolder" promptText="%in_exportAllFolderPrompt" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                    <Button text="..." onAction="#doChooseExportAllFolder" GridPane.rowIndex="3" GridPane.columnIndex="2" />
+                    <HBox spacing="6.0" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="3">
+                        <Button fx:id="doExportAll" text="%in_exportAllButton" onAction="#doExportAll" />
+                        <Label fx:id="exportAllStatus" wrapText="true" />
+                    </HBox>
+                </GridPane>
             </TitledPane>
 
             <BorderPane>

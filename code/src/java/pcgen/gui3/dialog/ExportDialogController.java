@@ -24,6 +24,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -37,9 +38,11 @@ import pcgen.facade.core.CharacterFacade;
 import pcgen.facade.core.PartyFacade;
 import pcgen.gui2.UIPropertyContext;
 import pcgen.gui3.GuiUtility;
+import pcgen.io.ExportProfile;
 import pcgen.io.ExportUtilities;
 import pcgen.system.BatchExporter;
 import pcgen.system.CharacterManager;
+import pcgen.system.LanguageBundle;
 import pcgen.system.PCGenSettings;
 import pcgen.system.PropertyContext;
 import pcgen.util.Logging;
@@ -56,8 +59,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -82,8 +90,27 @@ public class ExportDialogController
 	private Button doClose;
 	@FXML
 	private Button doExport;
+	@FXML
+	private TitledPane exportAllPane;
+	@FXML
+	private CheckBox exportAllPdf;
+	@FXML
+	private ComboBox<File> exportAllPdfSheet;
+	@FXML
+	private CheckBox exportAllText;
+	@FXML
+	private ComboBox<File> exportAllTextSheet;
+	@FXML
+	private CheckBox exportAllPcg;
+	@FXML
+	private TextField exportAllFolder;
+	@FXML
+	private Button doExportAll;
+	@FXML
+	private Label exportAllStatus;
 
 	private final List<File> allTemplates;
+	private ExportProfile exportProfile;
 
 	public ExportDialogController()
 	{
@@ -359,6 +386,166 @@ public class ExportDialogController
 	}
 
 	@FXML
+	private void doExportAll(final ActionEvent actionEvent)
+	{
+		saveExportProfile();
+		if (!exportProfile.isIncludePdf() && !exportProfile.isIncludeText() && !exportProfile.isIncludePcg())
+		{
+			exportAllStatus.setText(LanguageBundle.getString("in_exportAllNothing"));
+			return;
+		}
+		List<CharacterFacade> characters = new ArrayList<>();
+		if (entireParty.isSelected())
+		{
+			CharacterManager.getCharacters().forEach(characters::add);
+		}
+		else if (selectCharacterBox.getSelectionModel().getSelectedItem() != null)
+		{
+			characters.add(selectCharacterBox.getSelectionModel().getSelectedItem());
+		}
+
+		List<File> written = new ArrayList<>();
+		List<String> errors = new ArrayList<>();
+		for (CharacterFacade character : characters)
+		{
+			ExportProfile.Result result = exportProfile.export(character);
+			written.addAll(result.written());
+			errors.addAll(result.errors());
+		}
+
+		String folders = written.stream()
+		                        .map(file -> file.getParent())
+		                        .distinct()
+		                        .reduce((a, b) -> a + ", " + b)
+		                        .orElse("");
+		exportAllStatus.setText(LanguageBundle.getFormattedString("in_exportAllDone", written.size(), folders));
+		if (!errors.isEmpty())
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle(Constants.APPLICATION_NAME);
+			alert.setHeaderText(LanguageBundle.getString("in_exportAllFailed"));
+			alert.setContentText(String.join("\n", errors));
+			alert.show();
+		}
+	}
+
+	@FXML
+	private void doChooseExportAllFolder(final ActionEvent actionEvent)
+	{
+		DirectoryChooser chooser = new DirectoryChooser();
+		chooser.setTitle(LanguageBundle.getString("in_exportAllFolder"));
+		String current = exportAllFolder.getText();
+		File initial = StringUtils.isBlank(current) ? new File(PCGenSettings.getPcgDir()) : new File(current);
+		chooser.setInitialDirectory(GuiUtility.existingInitialDirectory(initial));
+		File dir = chooser.showDialog(exportAllFolder.getScene().getWindow());
+		if (dir != null)
+		{
+			exportAllFolder.setText(dir.getAbsolutePath());
+		}
+	}
+
+	private void saveExportProfile()
+	{
+		exportProfile.setIncludePdf(exportAllPdf.isSelected());
+		exportProfile.setIncludeText(exportAllText.isSelected());
+		exportProfile.setIncludePcg(exportAllPcg.isSelected());
+		exportProfile.setPdfSheet(exportAllPdfSheet.getValue());
+		exportProfile.setTextSheet(exportAllTextSheet.getValue());
+		exportProfile.setOutputDir(exportAllFolder.getText());
+		exportProfile.save();
+	}
+
+	/**
+	 * The character sheets of the current game mode that the filters accept, sorted, with
+	 * the profile's current choice added when it lives elsewhere.
+	 */
+	private List<File> exportAllSheets(File current, ExportUtilities.SheetFilter... filters)
+	{
+		List<File> sheets = new ArrayList<>(allTemplates.stream()
+			.filter(File::isFile)
+			.filter(f -> f.getName().startsWith(Constants.CHARACTER_TEMPLATE_PREFIX))
+			.filter(f -> Arrays.stream(filters).anyMatch(filter -> filter.accept(f.getParentFile(), f.getName())))
+			.sorted()
+			.toList());
+		if (current != null && !sheets.contains(current))
+		{
+			sheets.add(0, current);
+		}
+		return sheets;
+	}
+
+	private void initializeExportAll()
+	{
+		exportProfile = ExportProfile.forCurrentGameMode();
+		exportAllPane.setText(LanguageBundle.getFormattedString("in_exportAll", exportProfile.getGameModeName()));
+
+		StringConverter<File> sheetNames = new SheetNameConverter(ExportUtilities.getGameModeSheetDir());
+		exportAllPdfSheet.setConverter(sheetNames);
+		exportAllTextSheet.setConverter(sheetNames);
+		exportAllPdfSheet.setItems(FXCollections.observableList(
+			exportAllSheets(exportProfile.getPdfSheet(), ExportUtilities.SheetFilter.PDF)));
+		exportAllTextSheet.setItems(FXCollections.observableList(
+			exportAllSheets(exportProfile.getTextSheet(), ExportUtilities.SheetFilter.TEXT,
+				ExportUtilities.SheetFilter.HTMLXML)));
+		exportAllPdfSheet.setValue(exportProfile.getPdfSheet());
+		exportAllTextSheet.setValue(exportProfile.getTextSheet());
+		exportAllPdf.setSelected(exportProfile.isIncludePdf());
+		exportAllText.setSelected(exportProfile.isIncludeText());
+		exportAllPcg.setSelected(exportProfile.isIncludePcg());
+		exportAllFolder.setText(exportProfile.getOutputDir());
+
+		exportAllPdfSheet.disableProperty().bind(exportAllPdf.selectedProperty().not());
+		exportAllTextSheet.disableProperty().bind(exportAllText.selectedProperty().not());
+		doExportAll.disableProperty().bind(selectCharacterBox.valueProperty().isNull()
+			.and(entireParty.selectedProperty().not()));
+
+		ChangeListener<Object> save = (observable, oldValue, newValue) -> saveExportProfile();
+		exportAllPdf.selectedProperty().addListener(save);
+		exportAllText.selectedProperty().addListener(save);
+		exportAllPcg.selectedProperty().addListener(save);
+		exportAllPdfSheet.valueProperty().addListener(save);
+		exportAllTextSheet.valueProperty().addListener(save);
+		exportAllFolder.textProperty().addListener(save);
+	}
+
+	/**
+	 * Shows a sheet as its path below the game mode's sheet folder, e.g. "pdf/csheet_x.xslt".
+	 */
+	private static final class SheetNameConverter extends StringConverter<File>
+	{
+		private final File base;
+
+		private SheetNameConverter(File base)
+		{
+			this.base = base.getAbsoluteFile();
+		}
+
+		@Override
+		public String toString(File sheet)
+		{
+			if (sheet == null)
+			{
+				return "";
+			}
+			try
+			{
+				return base.toPath().normalize().relativize(sheet.getAbsoluteFile().toPath().normalize()).toString()
+					.replace(File.separatorChar, '/');
+			}
+			catch (IllegalArgumentException e)
+			{
+				return sheet.getAbsolutePath();
+			}
+		}
+
+		@Override
+		public File fromString(String string)
+		{
+			return null;
+		}
+	}
+
+	@FXML
 	private void doOnClose(final ActionEvent actionEvent)
 	{
 		var button = (Button)actionEvent.getSource();
@@ -390,5 +577,6 @@ public class ExportDialogController
 			      .findFirst()
 			      .ifPresent(filter -> exportSheetType.getSelectionModel().select(filter));
 		}
+		initializeExportAll();
 	}
 }

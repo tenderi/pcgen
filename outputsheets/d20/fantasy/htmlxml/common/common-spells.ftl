@@ -142,7 +142,9 @@
 </@loop>
  </tr>
 <#assign spellClassName = pcstring('SPELLLISTCLASS.${class}')/>
-<#if pcvar('VAR.${spellClassName}CastLVL_1') gt 0>
+<#-- a racial or other non-class spell list has no such variable: NaN, which cannot be compared -->
+<#assign castLvl1 = pcvar('VAR.${spellClassName}CastLVL_1')/>
+<#if !castLvl1?is_nan && castLvl1 gt 0>
  <tr>
   <td class="sptab"><b>PREPARED</b></td>
 <@loop from=0 to=pcvar('MAXSPELLLEVEL.${class}') ; level , level_has_next><#-- TODO: Loop was of early exit type 1 -->

@@ -136,6 +136,29 @@ untested on real macOS hardware here; verify on a Mac when possible.
   (Preferences) dialogs committed state and disposed Swing windows on the FX thread; now done on the EDT.
 - Removed a blank, actionless button from the Biography tab (leftover from removed custom bio fields).
 
+**Export All (Export dialog):** a section under the template list writes a PDF, a text sheet and a
+copy of the `.pcg` in one click, for the selected character or the entire party. The settings are
+remembered **per game mode** in `UIConfig.v2.ini` as `ExportAll.<game mode>.*`. Sheets are stored
+relative to `outputsheets/`. An empty folder means "next to the character's file", and then the
+`.pcg` step is a normal save. Files are named after the character's `.pcg` (or its name if it was
+never saved), and existing files are overwritten. Default sheets come from the last sheet used in
+the dialog for this game mode, then `OUTPUTSHEET:DEFAULT.PDF` / `DEFAULT.TXT` (`DEFAULT.TXT|csheet_plain.TXT`
+was added to the game modes that use `d20/fantasy` and to Pathfinder 2). Code: `pcgen.io.ExportProfile`,
+`ExportDialogController.initializeExportAll`, `CharacterFacadeImpl.saveCopy` (writes without changing
+the character's file or unsaved-changes state). Tests: `ExportProfileTest`, `ExportDialogExportAllTest`
+(TestFX), `PfrpgExportAllTest` (pfinttest, end to end).
+
+**Interactive HTML sheet:** `csheet_fantasy_interactive.htm.ftl` (Export → Standard) is the standard
+fantasy HTML sheet plus a browser-side session tracker (HP, conditions, effects, adjustments, notes)
+kept in the browser's local storage per character. It is **generated**: edit
+`code/tools/interactive-sheet/session.js` / `make_interactive.py` and rebuild (see the README there),
+and rebuild after upstream changes to `csheet_fantasy_std.htm.ftl`. Tests: `engine-test.js` and
+`ui-test.mjs` there (Node + headless Firefox) and `PfrpgInteractiveSheetTest` (pfinttest).
+Intended split: buffs that last a while go in PCGen's Temporary Bonuses tab (exact rules, saved in
+the .pcg); the sheet tracks what changes during play.
+Also fixed for it: `common/common-spells.ftl` (fantasy and pathfinder_2) aborted every HTML sheet for
+racial spellcasters (e.g. `pf_goldielocks`) by comparing a missing `CastLVL_1` variable (NaN) with 0.
+
 **Known upstream issue, deliberately not fixed:** loading a Pathfinder character logs 72 ×
 `Evaluation called on invalid variable: 'Score' / 'Mod' / 'CHANNEL*STATSCORE'`. Cause: since
 #7563, `ScopeFacet.get(CharID, VarScoped)` asks for the global scope, and

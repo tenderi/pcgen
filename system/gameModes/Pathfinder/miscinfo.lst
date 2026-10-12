@@ -313,6 +313,7 @@ PREVIEWSHEET:Standard.htm.ftl
 OUTPUTSHEET:DIRECTORY|d20/fantasy
 OUTPUTSHEET:DEFAULT.PDF|csheet_fantasy_std_blue.xslt
 OUTPUTSHEET:DEFAULT.HTM|csheet_fantasy_std.htm
+OUTPUTSHEET:DEFAULT.TXT|csheet_plain.TXT
 
 INFOSHEET:SUMMARY|preview/summary/pfrpg_info.html.ftl
 INFOSHEET:SKILLS|preview/skills/35e_skills.html

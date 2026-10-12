@@ -2436,6 +2436,28 @@ public class CharacterFacadeImpl
 		theCharacter.setDirty(false);
 	}
 
+	/**
+	 * Write a copy of the character to another file. The character keeps its own file and
+	 * its "unsaved changes" state.
+	 *
+	 * @param target the file to write
+	 * @throws java.io.UncheckedIOException if the file cannot be written
+	 */
+	public void saveCopy(File target)
+	{
+		boolean dirty = theCharacter.isDirty();
+		GameMode mode = dataSet.getGameMode();
+		List<Campaign> campaigns = ListFacades.wrap(dataSet.getCampaigns());
+		try
+		{
+			(new PCGIOHandler()).write(theCharacter, mode, campaigns, target);
+		}
+		finally
+		{
+			theCharacter.setDirty(dirty);
+		}
+	}
+
 	@Override
 	public boolean isAutomatic(Language language)
 	{
